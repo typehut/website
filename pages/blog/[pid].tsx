@@ -53,10 +53,9 @@ const getStaticProps: GetStaticProps<BlogProps, BlogParams> = async ({
   params,
 }) => {
   const pid = params!.pid;
+
   try {
-    const data = await PostAPI.get(pid);
-    const { content, data: meta } = parseFrontMatter(data);
-    const source = await serialize(content, { scope: meta });
+    const { source, meta } = await PostAPI.get(pid);
     return {
       props: { pid, source, meta },
     };
