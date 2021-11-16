@@ -1,0 +1,27 @@
+@layer components {
+  .btn {
+    @apply py-1 px-4 rounded shadow-md;
+
+    &:focus {
+      @apply outline-none ring-2 ring-focus-500 ring-opacity-75;
+    }
+  }
+
+  .btn-primary {
+    @extend .btn;
+    @apply bg-primary-900 text-primary-50;
+
+    &:hover {
+      @apply bg-primary-700;
+    }
+  }
+
+  .btn-secondary {
+    @extend .btn;
+    @apply bg-secondary-900 text-secondary-50;
+
+    &:hover {
+      @apply bg-secondary-700;
+    }
+  }
+}

@@ -2,8 +2,9 @@ import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
 import Head from "next/head";
 
+import Layout from "@/components/Layout";
 import { DEFAULT_SEO_OPTIONS } from "@/lib/utils/constant";
-import "@/styles/globals.css";
+import "@/styles/globals.scss";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -16,7 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <DefaultSeo {...DEFAULT_SEO_OPTIONS} />
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </>
   );
 }
