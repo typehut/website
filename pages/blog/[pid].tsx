@@ -1,9 +1,12 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { NextSeo, NextSeoProps } from "next-seo";
+import getConfig from "next/config";
 import * as React from "react";
 
 import * as PostAPI from "@/lib/api/post";
 import { PostType, SerializablePostMeta } from "@/lib/types/postType";
+import { timestampToIso } from "@/lib/utils/format";
 
 type BlogParams = {
   pid: PostType["pid"];
@@ -12,14 +15,41 @@ type BlogParams = {
 type BlogProps = PostType<MDXRemoteSerializeResult, SerializablePostMeta>;
 
 const components: Record<string, React.ReactNode> = {};
+const { publicRuntimeConfig } = getConfig() as {
+  publicRuntimeConfig: Record<string, unknown>;
+};
 
-const Blog: NextPage<BlogProps> = ({ body, meta }) => {
+const Blog: NextPage<BlogProps> = ({ pid, body, meta }) => {
+  const nextSeoProps: NextSeoProps = {
+    title: meta.title,
+    description: meta.description,
+    canonical: `${publicRuntimeConfig.siteUrl}/blog/${pid}`,
+    twitter: {
+      handle: meta.author?.twitter ?? `@${meta.author.twitter}`,
+    },
+    openGraph: {
+      images: meta?.images,
+      type: "article",
+      article: {
+        publishedTime: timestampToIso(meta.published_at),
+        modifiedTime: meta?.modified_at
+          ? timestampToIso(meta.modified_at)
+          : undefined,
+        tags: meta?.tags,
+        authors: [`${publicRuntimeConfig.siteUrl}/authors/${meta.author.name}`],
+      },
+    },
+  };
+
   return (
-    <article>
-      <h1>{meta.title}</h1>
-      <p>by {meta.author.name}</p>
-      <MDXRemote {...body} components={components} />
-    </article>
+    <>
+      <NextSeo {...nextSeoProps} />
+      <article>
+        <h1>{meta.title}</h1>
+        <p>by {meta.author.name}</p>
+        <MDXRemote {...body} components={components} />
+      </article>
+    </>
   );
 };
 

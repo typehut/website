@@ -1,6 +1,8 @@
+import { DefaultSeoProps } from "next-seo";
 import getConfig from "next/config";
 
-const { serverRuntimeConfig } = getConfig() as {
+const { publicRuntimeConfig, serverRuntimeConfig } = getConfig() as {
+  publicRuntimeConfig: Record<string, unknown>;
   serverRuntimeConfig: Record<string, unknown>;
 };
 
@@ -22,3 +24,6 @@ export const LRU_MAX_SIZE = serverRuntimeConfig.hasOwnProperty("lruMaxSize")
 export const LRU_MAX_AGE = serverRuntimeConfig.hasOwnProperty("lruMaxAge")
   ? (serverRuntimeConfig.lruMaxAge as number)
   : Infinity;
+
+export const DEFAULT_SEO_OPTIONS =
+  publicRuntimeConfig.defaultSeo as Readonly<DefaultSeoProps>;
