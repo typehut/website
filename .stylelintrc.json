@@ -1,0 +1,23 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-property-sort-order-smacss",
+    "stylelint-config-prettier"
+  ],
+  "rules": {
+    "max-nesting-depth": 1,
+    "scss/at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "tailwind",
+          "apply",
+          "layer",
+          "variants",
+          "responsive",
+          "screen"
+        ]
+      }
+    ]
+  }
+}
