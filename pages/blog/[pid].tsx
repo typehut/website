@@ -11,17 +11,7 @@ type BlogParams = {
 
 type BlogProps = PostType<MDXRemoteSerializeResult, SerializablePostMeta>;
 
-type HTMLElementProps = JSX.IntrinsicAttributes & {
-  children?: React.ReactNode;
-};
-
-const components: Record<string, React.ReactNode> = {
-  h1: (props: HTMLElementProps) => <h2 {...props}>{props.children}</h2>,
-  h2: (props: HTMLElementProps) => <h3 {...props}>{props.children}</h3>,
-  h3: (props: HTMLElementProps) => <h4 {...props}>{props.children}</h4>,
-  h4: (props: HTMLElementProps) => <h5 {...props}>{props.children}</h5>,
-  h5: (props: HTMLElementProps) => <h6 {...props}>{props.children}</h6>,
-};
+const components: Record<string, React.ReactNode> = {};
 
 const Blog: NextPage<BlogProps> = ({ body }) => {
   return (

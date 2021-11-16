@@ -1,7 +1,10 @@
+import rehypePrism from "@mapbox/rehype-prism";
 import matter from "gray-matter";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import { SerializeOptions } from "next-mdx-remote/dist/types";
 import { serialize } from "next-mdx-remote/serialize";
 import QuickLRU from "quick-lru";
+import remarkBehead from "remark-behead";
 
 import { LRU_MAX_AGE, LRU_MAX_SIZE } from "./constant";
 
@@ -9,6 +12,13 @@ export const cache = new QuickLRU({
   maxSize: LRU_MAX_SIZE,
   maxAge: LRU_MAX_AGE,
 });
+
+const serializeOptions: SerializeOptions = {
+  mdxOptions: {
+    remarkPlugins: [[remarkBehead, { depth: 1 }]],
+    rehypePlugins: [rehypePrism],
+  },
+};
 
 export const isolateMDX = <
   T extends Record<string, unknown> = Record<string, unknown>
@@ -34,7 +44,7 @@ export const compileMDX = async <
     };
   }
   const { content, data: meta } = isolateMDX<T>(mdx, typeGuard);
-  const body = await serialize(content);
+  const body = await serialize(content, serializeOptions);
   const data = { body, meta };
   cache.set(mdx, data);
   return data;
