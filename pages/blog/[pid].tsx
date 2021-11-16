@@ -13,11 +13,13 @@ type BlogProps = PostType<MDXRemoteSerializeResult, SerializablePostMeta>;
 
 const components: Record<string, React.ReactNode> = {};
 
-const Blog: NextPage<BlogProps> = ({ body }) => {
+const Blog: NextPage<BlogProps> = ({ body, meta }) => {
   return (
-    <>
+    <article>
+      <h1>{meta.title}</h1>
+      <p>by {meta.author.name}</p>
       <MDXRemote {...body} components={components} />
-    </>
+    </article>
   );
 };
 
