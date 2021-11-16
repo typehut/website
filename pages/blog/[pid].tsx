@@ -1,20 +1,15 @@
-import parseFrontMatter from "gray-matter";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { serialize } from "next-mdx-remote/serialize";
 import * as React from "react";
 
 import * as PostAPI from "@/lib/api/post";
+import { PostType, SerializablePostMeta } from "@/lib/types/postType";
 
 type BlogParams = {
-  pid: string;
+  pid: PostType["pid"];
 };
 
-type BlogProps = {
-  pid: BlogParams["pid"];
-  source: MDXRemoteSerializeResult;
-  meta: Record<string, unknown>;
-};
+type BlogProps = PostType<MDXRemoteSerializeResult, SerializablePostMeta>;
 
 type HTMLElementProps = JSX.IntrinsicAttributes & {
   children?: React.ReactNode;
@@ -28,10 +23,10 @@ const components: Record<string, React.ReactNode> = {
   h5: (props: HTMLElementProps) => <h6 {...props}>{props.children}</h6>,
 };
 
-const Blog: NextPage<BlogProps> = ({ source }) => {
+const Blog: NextPage<BlogProps> = ({ body }) => {
   return (
     <>
-      <MDXRemote {...source} components={components} />
+      <MDXRemote {...body} components={components} />
     </>
   );
 };
@@ -55,9 +50,9 @@ const getStaticProps: GetStaticProps<BlogProps, BlogParams> = async ({
   const pid = params!.pid;
 
   try {
-    const { source, meta } = await PostAPI.get(pid);
+    const { body, meta } = await PostAPI.get(pid);
     return {
-      props: { pid, source, meta },
+      props: { pid, body, meta },
     };
   } catch (error) {
     console.error("Failed to load the blog post.");

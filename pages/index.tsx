@@ -1,11 +1,19 @@
 import Head from "next/head";
 import Image from "next/image";
 
-import styles from "../styles/Home.module.css";
+import * as PostAPI from "@/lib/api/post";
+import { Unpacked } from "@/lib/types/utils";
+import styles from "@/styles/Home.module.css";
 
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 
-const Home: NextPage = () => {
+type HomeParams = {};
+
+type HomeProps = {
+  posts: Unpacked<ReturnType<typeof PostAPI.all>>;
+};
+
+const Home: NextPage<HomeProps> = ({ posts }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -53,6 +61,12 @@ const Home: NextPage = () => {
             </p>
           </a>
         </div>
+
+        <div>
+          {posts.map((post) => (
+            <article key={post.pid}>{post.meta.title}</article>
+          ))}
+        </div>
       </main>
 
       <footer className={styles.footer}>
@@ -71,4 +85,17 @@ const Home: NextPage = () => {
   );
 };
 
+const getStaticProps: GetStaticProps<HomeProps, HomeParams> = async ({
+  params,
+}) => {
+  const posts = await PostAPI.all();
+
+  return {
+    props: {
+      posts,
+    },
+  };
+};
+
 export default Home;
+export { getStaticProps };
