@@ -1,8 +1,7 @@
 import {
   useEventListener,
-  useIsomorphicLayoutEffect,
   useMountEffect,
-  useThrottledCallback,
+  useRafCallback,
 } from "@react-hookz/web";
 import { RefObject, useState } from "react";
 
@@ -14,49 +13,33 @@ export type ScrollPosition = {
 };
 
 const useScrollPosition = <T extends EventTarget>(
-  target: T | RefObject<T> | null | undefined,
-  throttleDelay: number = 16
+  target: T | RefObject<T> | null | undefined
 ) => {
   const [scrollPosition, setScrollPosition] = useState<ScrollPosition>({
     x: null,
     y: null,
   });
-  const [tgt, setTarget] = useState<T | null>(
-    target && hasOwnProperty(target, "current")
-      ? target.current
-      : target || null
-  );
 
-  const scrollHandler = useThrottledCallback(
-    () => {
-      if (!tgt) return;
-      const x = hasOwnProperty(tgt, "scrollX")
-        ? (tgt.scrollX as number)
-        : hasOwnProperty(tgt, "scrollLeft")
-        ? (tgt.scrollLeft as number)
-        : null;
-      const y = hasOwnProperty(tgt, "scrollY")
-        ? (tgt.scrollY as number)
-        : hasOwnProperty(tgt, "scrollTop")
-        ? (tgt.scrollTop as number)
-        : null;
-      setScrollPosition({ x, y });
-    },
-    [tgt],
-    throttleDelay
-  );
-
-  useIsomorphicLayoutEffect(() => {
-    setTarget(
+  const [scrollHandler] = useRafCallback(() => {
+    const tgt =
       target && hasOwnProperty(target, "current")
         ? target.current
-        : target || null
-    );
-  }, [target]);
-
-  useMountEffect(() => {
-    scrollHandler();
+        : target || null;
+    if (!tgt) return;
+    const x = hasOwnProperty(tgt, "scrollX")
+      ? (tgt.scrollX as number)
+      : hasOwnProperty(tgt, "scrollLeft")
+      ? (tgt.scrollLeft as number)
+      : null;
+    const y = hasOwnProperty(tgt, "scrollY")
+      ? (tgt.scrollY as number)
+      : hasOwnProperty(tgt, "scrollTop")
+      ? (tgt.scrollTop as number)
+      : null;
+    setScrollPosition({ x, y });
   });
+
+  useMountEffect(scrollHandler);
 
   useEventListener(target || null, "scroll", scrollHandler, { passive: true });
 
