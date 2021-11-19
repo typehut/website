@@ -40,7 +40,7 @@ const Drawer = React.forwardRef<BaseElement, DrawerProps>(
         setTranslating(true);
         if (invisible) setInvisible(false);
       },
-      end: () => {
+      end: (e: Event) => {
         setTranslating(false);
         if (!expanded && !invisible) setInvisible(true);
       },

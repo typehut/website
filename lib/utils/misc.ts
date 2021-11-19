@@ -6,3 +6,10 @@ export const hasOwnProperty = <
   property: K
 ): obj is T & Record<K, unknown> =>
   Object.prototype.hasOwnProperty.call(obj, property);
+
+export const scrollingElement =
+  typeof document === "undefined"
+    ? null
+    : typeof document["scrollingElement"] === "undefined"
+    ? document.documentElement
+    : document.scrollingElement;

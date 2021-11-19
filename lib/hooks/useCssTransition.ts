@@ -1,12 +1,15 @@
 import { useEventListener } from "@react-hookz/web";
 import * as React from "react";
 
+type EventListener =
+  | EventListenerOrEventListenerObject
+  | ((...args: any[]) => any);
 export type useCssTransitionOptions<T extends EventTarget = EventTarget> = {
   ref: React.RefObject<T>;
-  run?: () => void;
-  start?: () => void;
-  cancel?: () => void;
-  end?: () => void;
+  run?: EventListener;
+  start?: EventListener;
+  cancel?: EventListener;
+  end?: EventListener;
 };
 
 const noop = () => {};

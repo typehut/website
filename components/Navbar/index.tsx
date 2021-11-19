@@ -71,7 +71,13 @@ const NavbarItem = ({ children, href, isActive = false }: NavbarItemProps) => {
 
 const Navbar = React.forwardRef<BaseElement, NavbarProps>(
   (props, forwardedRef) => {
-    const { activeItem, theme: themeProp, waypoint = 48, ...divProps } = props;
+    const {
+      activeItem,
+      theme: themeProp,
+      waypoint = 48,
+      className,
+      ...divProps
+    } = props;
 
     const drawerId = useId("drawer");
     const drawerRef = React.useRef<HTMLDivElement>(null);
@@ -125,10 +131,7 @@ const Navbar = React.forwardRef<BaseElement, NavbarProps>(
         <div
           {...divProps}
           ref={forwardedRef}
-          className={clsx(
-            "relative z-40 w-full duration-300",
-            divProps.className
-          )}
+          className={clsx("relative z-40 w-full duration-300", className)}
         >
           <div
             className={clsx("fixed h-scroll-padding left-0 top-0 w-full", [

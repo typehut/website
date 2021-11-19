@@ -26,5 +26,15 @@
         "warnOnUnassignedImports": true
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.ts", "**/*.test.tsx"],
+      "extends": [
+        "plugin:jest-dom/recommended",
+        "next/core-web-vitals",
+        "prettier"
+      ]
+    }
+  ]
 }
