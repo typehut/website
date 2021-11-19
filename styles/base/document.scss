@@ -1,0 +1,10 @@
+@layer base {
+  html,
+  body {
+    scroll-padding-top: var(--app-nav-height);
+  }
+
+  body {
+    @apply overflow-x-hidden;
+  }
+}

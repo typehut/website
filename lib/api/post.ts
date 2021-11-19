@@ -1,9 +1,9 @@
+import { isNotNull } from "@/lib/types/misc";
 import {
   isPostMeta,
   PostMeta,
   toSerializablePostMeta,
 } from "@/lib/types/postType";
-import { isNotNull } from "@/lib/types/utils";
 import {
   GITHUB_CONTENTS_BLOG_ENDPOINT,
   GITHUB_CONTENTS_BLOG_POST_RAW,

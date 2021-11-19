@@ -8,16 +8,19 @@ import * as PostAPI from "@/lib/api/post";
 import { PostType, SerializablePostMeta } from "@/lib/types/postType";
 import { timestampToIso } from "@/lib/utils/format";
 
-type BlogParams = {
-  pid: PostType["pid"];
-};
-
-type BlogProps = PostType<MDXRemoteSerializeResult, SerializablePostMeta>;
+import type { ParsedUrlQuery } from "querystring";
 
 const components: Record<string, React.ReactNode> = {};
 const { publicRuntimeConfig } = getConfig() as {
   publicRuntimeConfig: Record<string, unknown>;
 };
+
+export interface BlogParams extends ParsedUrlQuery {
+  pid: PostType["pid"];
+}
+
+export interface BlogProps
+  extends PostType<MDXRemoteSerializeResult, SerializablePostMeta> {}
 
 const Blog: NextPage<BlogProps> = ({ pid, body, meta }) => {
   const nextSeoProps: NextSeoProps = {

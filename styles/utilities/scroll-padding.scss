@@ -1,0 +1,22 @@
+@layer utilities {
+  .mt-scroll-padding {
+    margin-top: var(--app-nav-height);
+  }
+
+  .pt-scroll-padding {
+    padding-top: var(--app-nav-height);
+  }
+
+  .h-scroll-padding {
+    height: var(--app-nav-height);
+  }
+
+  .m-h-scroll-padding {
+    min-height: var(--app-nav-height);
+  }
+
+  /* stylelint-disable-next-line selector-class-pattern */
+  .-mt-scroll-padding {
+    margin-top: calc(-1 * var(--app-nav-height));
+  }
+}

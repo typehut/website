@@ -1,0 +1,5 @@
+@layer utilities {
+  .transition-transform-opacity {
+    transition-property: transform, opacity;
+  }
+}
