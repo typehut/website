@@ -1,7 +1,7 @@
 import { useEventListener } from "@react-hookz/web";
 import * as React from "react";
 
-export type useCssTransitionOptions<T extends HTMLElement> = {
+export type useCssTransitionOptions<T extends EventTarget = EventTarget> = {
   ref: React.RefObject<T>;
   run?: () => void;
   start?: () => void;
@@ -12,32 +12,32 @@ export type useCssTransitionOptions<T extends HTMLElement> = {
 const noop = () => {};
 const eventListenerOptions: AddEventListenerOptions = { passive: true };
 
-const useCssTransition = <T extends HTMLElement>({
+const useCssTransition = <T extends EventTarget = EventTarget>({
   ref,
   run,
   start,
   cancel,
   end,
 }: useCssTransitionOptions<T>) => {
-  useEventListener<HTMLElement>(
+  useEventListener<EventTarget>(
     ref,
     "transitionrun",
     run ?? noop,
     eventListenerOptions
   );
-  useEventListener<HTMLElement>(
+  useEventListener<EventTarget>(
     ref,
     "transitionstart",
     start ?? noop,
     eventListenerOptions
   );
-  useEventListener<HTMLElement>(
+  useEventListener<EventTarget>(
     ref,
     "transitioncancel",
     cancel ?? end ?? noop,
     eventListenerOptions
   );
-  useEventListener<HTMLElement>(
+  useEventListener<EventTarget>(
     ref,
     "transitionend",
     end ?? noop,
