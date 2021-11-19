@@ -9,7 +9,7 @@ function scrollTo(y: number) {
   return wait(300);
 }
 
-test("Should toggle visibility when button was clicked", async () => {
+test("Should change class when scrollY crossed waypoint", async () => {
   const waypoint = 48;
 
   const ExampleCode = () => {
@@ -42,4 +42,6 @@ test("Should toggle visibility when button was clicked", async () => {
   expect(fixedElement).toHaveClass("text-primary-900", "bg-primary-50");
   await scrollTo(waypoint + 1);
   expect(fixedElement).toHaveClass("text-primary-50", "bg-primary-900");
+  await scrollTo(0);
+  expect(fixedElement).toHaveClass("text-primary-900", "bg-primary-50");
 });
