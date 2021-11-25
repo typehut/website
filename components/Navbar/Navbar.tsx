@@ -4,7 +4,7 @@ import Link, { LinkProps } from "next/link";
 import * as React from "react";
 
 import Drawer from "@/components/Drawer";
-import HamburgerToggle from "@/components/HamburgerToggle";
+import HamburgerToggle from "@/components/HamburgerToggle/HamburgerToggle";
 import Logo from "@/components/Logo";
 import useWaypoint from "@/lib/hooks/useWaypoint";
 
