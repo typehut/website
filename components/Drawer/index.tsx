@@ -22,13 +22,17 @@ const Drawer = React.forwardRef<BaseElement, DrawerProps>(
     const ensuredForwardRef = useEnsuredForwardedRef<HTMLDivElement>(
       forwardedRef as React.MutableRefObject<HTMLDivElement>
     );
+    const scrollingElementRef = React.useRef<HTMLDivElement>(null);
     const [invisible, setInvisible] = React.useState(true);
     const [translating, setTranslating] = React.useState(false);
     const closeDrawer = React.useCallback(
       () => setExpanded(false),
       [setExpanded]
     );
-    const [, setDocumentScrollable] = useDocumentScrollable();
+    const [, setDocumentScrollable] = useDocumentScrollable(
+      scrollingElementRef,
+      { reserveScrollBarGap: true }
+    );
 
     React.useEffect(() => {
       setDocumentScrollable(!expanded);
@@ -62,7 +66,10 @@ const Drawer = React.forwardRef<BaseElement, DrawerProps>(
           )}
           aria-label="Navigation drawer"
         >
-          <div className="flex flex-col absolute top-0 right-0 bottom-32 left-0 overflow-y-auto h-full min-h-16">
+          <div
+            ref={scrollingElementRef}
+            className="flex flex-col absolute top-0 right-0 bottom-32 left-0 overflow-y-auto h-full min-h-16"
+          >
             <div className="pt-scroll-padding bg-primary-900"></div>
             {children}
           </div>
