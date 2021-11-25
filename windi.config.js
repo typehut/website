@@ -1,15 +1,16 @@
-/** @typedef {{ settings?: { fontSizeMin?: number; fontSizeMax?: number; ratioMin?: number; screenMin?: number; screenMax?: number; unit?: "rem" | "px"; prefix?: string; }; values?: Record<string, [number, number]>; }} FluidTypeConfig */
-/** @typedef {import("tailwindcss/tailwind-config").TailwindConfig & { theme: { fluidType?: FluidTypeConfig }}} TailwindConfig */
+// @ts-check
+import colors from "windicss/colors";
+import { defineConfig, transform } from "windicss/helpers";
 
-const colors = require("tailwindcss/colors");
+import fluidTypePlugin from "./windicss-plugin-fluid-types";
 
-/** @type {TailwindConfig} */
-module.exports = {
+export default defineConfig({
   mode: "jit",
-  purge: {
-    content: [
-      "./pages/**/*.{js,ts,jsx,tsx}",
-      "./components/**/*.{js,ts,jsx,tsx}",
+  extract: {
+    include: [
+      "./styles/**/*.css",
+      "./pages/**/*.{jsx,tsx}",
+      "./components/**/*.{jsx,tsx}",
     ],
   },
   darkMode: false,
@@ -41,6 +42,7 @@ module.exports = {
     },
     fluidType: {
       settings: {
+        prefix: "",
         fontSizeMin: 1,
         screenMin: 23.4375, // 375px (iPhone X)
       },
@@ -102,7 +104,10 @@ module.exports = {
     extend: {},
   },
   corePlugins: {
-    fontSize: false,
+    fontSize: true,
   },
-  plugins: [require("tailwindcss-fluid-type")],
-};
+  plugins: [
+    fluidTypePlugin,
+    /*transform("tailwindcss-fluid-type")*/
+  ],
+});

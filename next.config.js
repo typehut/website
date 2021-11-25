@@ -1,6 +1,7 @@
 const path = require("path");
 
 const withPlugins = require("next-compose-plugins");
+const WindiCSSWebpackPlugin = require("windicss-webpack-plugin");
 
 const plugins = [
   require("@next/bundle-analyzer")({
@@ -45,6 +46,10 @@ const nextConfiguration = {
       },
     },
     defaultAuthor: "croutonn",
+  },
+  webpack(config) {
+    config.plugins.push(new WindiCSSWebpackPlugin());
+    return config;
   },
 };
 

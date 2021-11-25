@@ -2,6 +2,7 @@ import { IdProvider } from "@radix-ui/react-id";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import "windi.css";
 
 import { DEFAULT_SEO_OPTIONS } from "@/lib/utils/constant";
 import "@/styles/globals.css";
