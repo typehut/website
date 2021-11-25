@@ -4,7 +4,7 @@
     @apply py-1 px-4 rounded shadow-md;
 
     &:focus {
-      @apply outline-none ring-2 ring-focus-500 ring-opacity-75;
+      @apply outline-none ring-2 ring-accent-500 ring-opacity-75;
     }
   }
 

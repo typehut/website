@@ -32,7 +32,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
   return (
     <>
       <Navbar theme={NAV_COLOR} waypoint={NAV_WAYPOINT} />
-      <Header className="bg-indigo-900 text-primary-50">
+      <Header className="bg-primary-900 text-primary-50">
         <div className="container mx-auto py-12">
           <h1>Hello</h1>
         </div>

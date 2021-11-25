@@ -131,7 +131,10 @@ const Navbar = React.forwardRef<BaseElement, NavbarProps>(
         <div
           {...divProps}
           ref={forwardedRef}
-          className={clsx("relative z-40 w-full duration-300", className)}
+          className={clsx(
+            "relative h-scroll-padding z-40 w-full duration-300",
+            className
+          )}
         >
           <div
             className={clsx("fixed h-scroll-padding left-0 top-0 w-full", [
