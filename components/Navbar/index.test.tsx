@@ -39,10 +39,10 @@ describe("Navbar", () => {
         theme: {
           text: "primary-900",
           bg: "primary-50",
-          whiteLogo: false,
+          logo: "primary-900",
           textScrolled: "primary-50",
           bgScrolled: "primary-900",
-          whiteLogoScrolled: true,
+          logoScrolled: "white",
         },
         waypoint,
       } as const;

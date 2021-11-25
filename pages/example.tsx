@@ -5,12 +5,12 @@ import Navbar from "@/components/Navbar";
 
 import type { ParsedUrlQuery } from "querystring";
 
-// <AvoidPurge text-primary-50 bg-primary-900 />
+// <AvoidPurge text-primary-50 bg-primary-900 var-white />
 
 const NAV_COLOR = {
   text: "primary-50",
   bg: "primary-900",
-  whiteLogo: true,
+  logo: "white",
 };
 const NAV_WAYPOINT = 64;
 

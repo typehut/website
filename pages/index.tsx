@@ -11,12 +11,12 @@ import styles from "@/styles/Home.module.css";
 
 import type { ParsedUrlQuery } from "querystring";
 
-// <AvoidPurge text-current bg-transparent text-primary-50 bg-primary-900 />
+// <AvoidPurge text-current bg-transparent text-primary-50 bg-primary-900 var-white />
 
 const NAV_COLOR = {
   text: "primary-50",
   bg: "transparent",
-  whiteLogo: true,
+  logo: "white",
   textScrolled: "primary-50",
   bgScrolled: "primary-900",
 };

@@ -3,16 +3,16 @@ import * as React from "react";
 
 import Logo from ".";
 
-test("Should have <img>", () => {
+test("Should have <svg>", () => {
   const ExampleCode = () => {
     const props = {
       width: 200,
       height: 100,
-      isWhite: false,
     };
     return <Logo {...props} />;
   };
 
   render(<ExampleCode />);
-  expect(screen.getByRole("img"));
+  const svg = globalThis.document.querySelector("svg");
+  expect(svg).not.toBeNull();
 });

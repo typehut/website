@@ -1,8 +1,9 @@
 // @ts-check
 import colors from "windicss/colors";
-import { defineConfig, transform } from "windicss/helpers";
+import { defineConfig } from "windicss/helpers";
 
 import fluidTypePlugin from "./windicss-plugin-fluid-types";
+import variableColorsPlugin from "./windicss-plugin-variable-colors";
 
 export default defineConfig({
   mode: "jit",
@@ -46,6 +47,9 @@ export default defineConfig({
         fontSizeMin: 1,
         screenMin: 23.4375, // 375px (iPhone X)
       },
+    },
+    variableColors: {
+      default: "primary-900",
     },
     fontFamily: {
       display: [
@@ -92,8 +96,5 @@ export default defineConfig({
   corePlugins: {
     fontSize: true,
   },
-  plugins: [
-    fluidTypePlugin,
-    /*transform("tailwindcss-fluid-type")*/
-  ],
+  plugins: [fluidTypePlugin, variableColorsPlugin],
 });

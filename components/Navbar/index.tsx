@@ -40,10 +40,10 @@ const NAV_ITEMS = [
 export type NavbarColor = {
   text: string;
   bg: string;
-  whiteLogo?: boolean;
+  logo?: string;
   textScrolled?: string;
   bgScrolled?: string;
-  whiteLogoScrolled?: boolean;
+  logoScrolled?: string;
 };
 
 type BaseElement = React.ElementRef<"div">;
@@ -91,10 +91,10 @@ const Navbar = React.forwardRef<BaseElement, NavbarProps>(
       const {
         text = "primary-50",
         bg = "primary-900",
+        logo = "white",
         textScrolled,
         bgScrolled,
-        whiteLogo = true,
-        whiteLogoScrolled,
+        logoScrolled,
       } = themeProp || {};
       return {
         text: crossed
@@ -107,7 +107,11 @@ const Navbar = React.forwardRef<BaseElement, NavbarProps>(
             ? `bg-${bgScrolled}`
             : `bg-${bg}`
           : `bg-${bg}`,
-        whiteLogo: crossed ? whiteLogoScrolled || whiteLogo : whiteLogo,
+        logo: crossed
+          ? logoScrolled
+            ? `var-${logoScrolled}`
+            : `var-${logo}`
+          : `var-${logo}`,
         shadow:
           (crossed ? true : bg === "transparent" ? false : true) &&
           "shadow-2xl",
@@ -151,7 +155,11 @@ const Navbar = React.forwardRef<BaseElement, NavbarProps>(
                 className="block w-12 h-12 lg:hidden"
               />
               <div className="mr-12 flex flex-grow justify-center lg:(ml-0 mr-4 flex-none w-auto)">
-                <Logo className="px-4" isWhite={theme.whiteLogo} />
+                <Link href="/">
+                  <a className="flex items-center justify-center w-full h-full">
+                    <Logo className={clsx("px-4 h-3.5", theme.logo)} />
+                  </a>
+                </Link>
               </div>
               <div className="hidden flex-grow px-5 lg:(w-auto block)">
                 <ul className="flex h-full justify-center items-stretch">
