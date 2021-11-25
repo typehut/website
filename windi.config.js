@@ -81,22 +81,8 @@ export default defineConfig({
       ],
     },
     extend: {
-      minHeight: {
-        16: "4rem",
-      },
       transitionTimingFunction: {
         "out-sharp": "cubic-bezier(0.24, 1, 0.32, 1)",
-      },
-      transitionDuration: {
-        250: "250ms",
-        350: "350ms",
-      },
-      rotate: {
-        "-135": "-135deg",
-        135: "135deg",
-      },
-      inset: {
-        "1_75": "0.4375rem",
       },
     },
   },

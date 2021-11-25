@@ -150,10 +150,10 @@ const Navbar = React.forwardRef<BaseElement, NavbarProps>(
                 aria-label="Toggle navigation"
                 className="block w-12 h-12 lg:hidden"
               />
-              <div className="mr-12 flex flex-grow justify-center lg:ml-0 lg:mr-4 lg:flex-none lg:w-auto">
+              <div className="mr-12 flex flex-grow justify-center lg:(ml-0 mr-4 flex-none w-auto)">
                 <Logo className="px-4" isWhite={theme.whiteLogo} />
               </div>
-              <div className="hidden flex-grow px-5 lg:w-auto lg:block">
+              <div className="hidden flex-grow px-5 lg:(w-auto block)">
                 <ul className="flex h-full justify-center items-stretch">
                   {NavbarItems}
                 </ul>

@@ -41,12 +41,12 @@ const HamburgerToggle = React.forwardRef<BaseElement, HamburgerToggleProps>(
             <span
               className={clsx(LINE_COMMON_CLASSNAME, {
                 "top-0": !expanded,
-                "top-1_75": expanded,
+                "top-1.75": expanded,
                 "rotate-135": expanded,
               })}
             ></span>
             <span
-              className={clsx(LINE_COMMON_CLASSNAME, "top-1_75", {
+              className={clsx(LINE_COMMON_CLASSNAME, "top-1.75", {
                 "opacity-0": expanded,
                 "-translate-x-full": expanded,
               })}
@@ -54,7 +54,7 @@ const HamburgerToggle = React.forwardRef<BaseElement, HamburgerToggleProps>(
             <span
               className={clsx(LINE_COMMON_CLASSNAME, {
                 "bottom-0": !expanded,
-                "bottom-1_75": expanded,
+                "bottom-1.75": expanded,
                 "-rotate-135": expanded,
               })}
             ></span>
