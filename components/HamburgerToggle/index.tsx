@@ -3,11 +3,7 @@ import * as React from "react";
 
 import ToggleExpand from "@/components/ToggleExpand";
 
-// <AvoidPurge block absolute border-t-2 border-solid border-current w-full left-0 transform-gpu transition-transform-opacity ease-in-out duration-250 rounded />
-
 const NAME = "HamburgerToggle";
-const LINE_COMMON_CLASSNAME =
-  "block absolute border-t-2 border-solid border-current w-full left-0 transform-gpu transition-transform-opacity ease-in-out duration-250 rounded";
 
 type BaseElement = React.ElementRef<typeof ToggleExpand>;
 type BaseElementProps = Omit<
@@ -18,6 +14,19 @@ export interface HamburgerToggleProps extends BaseElementProps {
   target: string;
   expanded: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
+
+const Line: React.VFC<{
+  className: Parameters<typeof clsx>[number];
+}> = ({ className }) => {
+  return (
+    <span
+      className={clsx(
+        "block absolute border-t-2 border-solid border-current w-full left-0 transform-gpu transition-transform-opacity ease-in-out duration-250 rounded",
+        className
+      )}
+    ></span>
+  );
+};
 
 const HamburgerToggle = React.forwardRef<BaseElement, HamburgerToggleProps>(
   (
@@ -38,26 +47,29 @@ const HamburgerToggle = React.forwardRef<BaseElement, HamburgerToggleProps>(
       >
         <div className="flex items-center justify-center w-full h-full">
           <div className="relative overflow-hidden w-6 h-4">
-            <span
-              className={clsx(LINE_COMMON_CLASSNAME, {
+            <Line
+              className={{
                 "top-0": !expanded,
                 "top-1.75": expanded,
                 "rotate-135": expanded,
-              })}
-            ></span>
-            <span
-              className={clsx(LINE_COMMON_CLASSNAME, "top-1.75", {
-                "opacity-0": expanded,
-                "-translate-x-full": expanded,
-              })}
-            ></span>
-            <span
-              className={clsx(LINE_COMMON_CLASSNAME, {
+              }}
+            />
+            <Line
+              className={[
+                "top-1.75",
+                {
+                  "opacity-0": expanded,
+                  "-translate-x-full": expanded,
+                },
+              ]}
+            />
+            <Line
+              className={{
                 "bottom-0": !expanded,
                 "bottom-1.75": expanded,
                 "-rotate-135": expanded,
-              })}
-            ></span>
+              }}
+            />
           </div>
         </div>
       </ToggleExpand>
