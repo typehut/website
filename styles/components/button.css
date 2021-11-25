@@ -1,6 +1,5 @@
 @layer components {
-  %btn,
-  .btn {
+  %btn {
     @apply py-1 px-4 rounded shadow-md;
 
     &:focus {

@@ -4,7 +4,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 
 import { DEFAULT_SEO_OPTIONS } from "@/lib/utils/constant";
-import "@/styles/globals.scss";
+import "@/styles/globals.css";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (

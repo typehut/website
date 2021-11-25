@@ -1,0 +1,8 @@
+@import "./tailwind.css";
+@import "./variables.css";
+@import "./base/document.css";
+@import "./components/button.css";
+@import "./utilities/transition.css";
+@import "./utilities/contain.css";
+@import "./utilities/tap-highlight.css";
+@import "./utilities/scroll-padding.css";
