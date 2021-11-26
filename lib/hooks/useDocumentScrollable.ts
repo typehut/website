@@ -1,10 +1,9 @@
-import { useIsomorphicLayoutEffect } from "@react-hookz/web";
 import {
   clearAllBodyScrollLocks,
   disableBodyScroll,
   enableBodyScroll,
 } from "body-scroll-lock";
-import { useState, RefObject } from "react";
+import { useEffect, useState, RefObject } from "react";
 
 import { hasOwnProperty } from "@/lib/utils/misc";
 
@@ -14,9 +13,8 @@ const useDocumentScrollable = <T extends HTMLElement>(
 ) => {
   const [scrollable, setScrollable] = useState<boolean>(true);
 
-  useIsomorphicLayoutEffect(() => {
-    if (typeof document === "undefined") return;
-
+  useEffect(() => {
+    const copyRef = target;
     const tgt =
       target && hasOwnProperty(target, "current")
         ? target.current
@@ -30,15 +28,15 @@ const useDocumentScrollable = <T extends HTMLElement>(
     }
     return () => {
       const tgt =
-        target && hasOwnProperty(target, "current")
-          ? target.current
-          : target || null;
+        copyRef && hasOwnProperty(copyRef, "current")
+          ? copyRef.current
+          : copyRef || null;
       if (tgt) {
         enableBodyScroll(tgt);
       }
       clearAllBodyScrollLocks();
     };
-  }, [scrollable]);
+  }, [target, scrollable, options]);
 
   return [scrollable, setScrollable] as const;
 };
