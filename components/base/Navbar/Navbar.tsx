@@ -40,6 +40,7 @@ const Navbar: React.VFC<NavbarProps> = (props) => {
             <ToggleHamburger
               target={state.drawer.id}
               expanded={state.drawer.expanded}
+              onExpandedChange={state.drawer.onExpandedChange}
               aria-label="Toggle navigation"
               className="block w-12 h-12 lg:hidden"
             />

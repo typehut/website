@@ -1,4 +1,5 @@
 import { useCallbackRef } from "@radix-ui/react-use-callback-ref";
+import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { useEscapeKeydown } from "@radix-ui/react-use-escape-keydown";
 import clsx from "clsx";
 import * as React from "react";
@@ -13,14 +14,29 @@ type BaseElement = React.ElementRef<"div">;
 type BaseElementProps = JSX.IntrinsicElements["div"];
 export interface DrawerProps extends React.PropsWithChildren<BaseElementProps> {
   id: string;
-  expanded: [boolean, (value: React.SetStateAction<boolean>) => void];
+  expanded?: boolean;
+  defaultExpanded?: boolean;
+  onExpandedChange?(expanded: boolean): void;
 }
 
 const Drawer = React.forwardRef<BaseElement, DrawerProps>(
   (
-    { children, id, expanded: [expanded, setExpanded], ...attrs }: DrawerProps,
+    {
+      children,
+      id,
+      expanded: expandedProp,
+      defaultExpanded = false,
+      onExpandedChange,
+      ...attrs
+    }: DrawerProps,
     forwardedRef
   ) => {
+    const [expanded = false, setExpanded] = useControllableState({
+      prop: expandedProp,
+      onChange: onExpandedChange,
+      defaultProp: defaultExpanded,
+    });
+
     const ensuredForwardRef = useEnsuredForwardedRef<HTMLDivElement>(
       forwardedRef as React.MutableRefObject<HTMLDivElement>
     );

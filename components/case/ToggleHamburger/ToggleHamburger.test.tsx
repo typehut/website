@@ -6,10 +6,12 @@ import ToggleHamburger from ".";
 
 test("Should toggle state of expanded on click", () => {
   const ExampleCode = () => {
-    const expanded = React.useState(false);
-    const props = {
+    const [expanded, setExpanded] = React.useState(false);
+    const props: React.ComponentPropsWithoutRef<typeof ToggleHamburger> = {
       target: "hoge",
       expanded,
+      defaultExpanded: false,
+      onExpandedChange: setExpanded,
     };
     return <ToggleHamburger {...props} />;
   };

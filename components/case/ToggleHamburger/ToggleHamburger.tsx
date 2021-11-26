@@ -6,13 +6,9 @@ import ToggleExpand from "@/components/case/ToggleExpand";
 const NAME = "ToggleHamburger";
 
 type BaseElement = React.ElementRef<typeof ToggleExpand>;
-type BaseElementProps = Omit<
-  React.ComponentPropsWithoutRef<typeof ToggleExpand>,
-  "expanded"
->;
+type BaseElementProps = React.ComponentPropsWithoutRef<typeof ToggleExpand>;
 export interface ToggleHamburgerProps extends BaseElementProps {
   target: string;
-  expanded: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
 const Line: React.VFC<{
@@ -30,7 +26,13 @@ const Line: React.VFC<{
 
 const ToggleHamburger = React.forwardRef<BaseElement, ToggleHamburgerProps>(
   (
-    { target, expanded: [expanded, setExpanded], ...buttonProps },
+    {
+      target,
+      expanded,
+      defaultExpanded = false,
+      onExpandedChange,
+      ...buttonProps
+    },
     forwardedRef
   ) => {
     return (
@@ -39,7 +41,8 @@ const ToggleHamburger = React.forwardRef<BaseElement, ToggleHamburgerProps>(
         ref={forwardedRef}
         target={target}
         expanded={expanded}
-        onExpandedChange={setExpanded}
+        defaultExpanded={defaultExpanded}
+        onExpandedChange={onExpandedChange}
         className={clsx(
           "cursor-pointer tap-highlight-transparent focus:outline-none",
           buttonProps.className

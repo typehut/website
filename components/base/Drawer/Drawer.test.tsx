@@ -7,23 +7,24 @@ import Drawer from ".";
 import ToggleHamburger from "@/components/case/ToggleHamburger/ToggleHamburger";
 
 test("Should toggle visibility when button was clicked", async () => {
-  const id = "hoge";
+  const ID = "hoge";
   const ExampleCode = () => {
-    const expanded = React.useState(false);
-    const props = {
-      id,
+    const [expanded, setExpanded] = React.useState(false);
+    const controllableProps = {
       expanded,
+      defaultExpanded: false,
+      onExpandedChange: setExpanded,
     };
     return (
       <>
-        <ToggleHamburger target={id} expanded={expanded} />
-        <Drawer {...props} />
+        <ToggleHamburger target={ID} {...controllableProps} />
+        <Drawer id={ID} {...controllableProps} />
       </>
     );
   };
 
   render(<ExampleCode />);
-  const drawer = document.getElementById(id);
+  const drawer = document.getElementById(ID);
   if (!drawer) throw new Error("The Drawer is not found.");
 
   const buttons = screen.getAllByRole("button");

@@ -18,7 +18,7 @@ const useNavbar = (props: NavbarProps) => {
 
   const drawerRef = React.useRef<HTMLDivElement>(null);
   const drawerId = useId("drawer");
-  const drawerExpanded = React.useState(false);
+  const [drawerExpanded, drawerSetExpanded] = React.useState(false);
   const crossed = useWaypoint(
     typeof window === "undefined" ? null : window,
     waypoint
@@ -29,6 +29,8 @@ const useNavbar = (props: NavbarProps) => {
       ref: drawerRef,
       id: drawerId,
       expanded: drawerExpanded,
+      defaultExpanded: false,
+      onExpandedChange: drawerSetExpanded,
     },
 
     theme: {
