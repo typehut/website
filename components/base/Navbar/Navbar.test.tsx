@@ -34,8 +34,7 @@ describe("Navbar", () => {
 
     const ExampleCode = () => {
       const props = {
-        activeItem: "Home",
-        theme: {
+        colors: {
           text: "primary-900",
           bg: "primary-50",
           logo: "primary-900",

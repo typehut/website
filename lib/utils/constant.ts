@@ -21,3 +21,30 @@ export const LRU_MAX_AGE = serverRuntimeConfig?.lruMaxAge || Infinity;
 
 export const DEFAULT_SEO_OPTIONS =
   publicRuntimeConfig.defaultSeo as Readonly<DefaultSeoProps>;
+
+export const NAV_ITEMS = [
+  {
+    href: "#home",
+    label: "Home",
+  },
+  {
+    href: "#features",
+    label: "Features",
+  },
+  {
+    href: "#about",
+    label: "About",
+  },
+  {
+    href: "#why",
+    label: "Why",
+  },
+  {
+    href: "#team",
+    label: "Team",
+  },
+  {
+    href: "/blog",
+    label: "Blog",
+  },
+] as const;

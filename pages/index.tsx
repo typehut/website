@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import Header from "@/components/base/Header";
 import Navbar from "@/components/base/Navbar";
+import { NavbarColors } from "@/components/base/Navbar/Navbar.types";
 import * as PostAPI from "@/lib/api/post";
 import { Unpacked } from "@/lib/types/misc";
 import styles from "@/styles/Home.module.css";
@@ -13,7 +14,7 @@ import type { ParsedUrlQuery } from "querystring";
 
 // <AvoidPurge text-current bg-transparent text-primary-50 bg-primary-900 var-white />
 
-const NAV_COLOR = {
+const NAV_COLORS: NavbarColors = {
   text: "primary-50",
   bg: "transparent",
   logo: "white",
@@ -31,7 +32,7 @@ export interface HomeProps {
 const Home: NextPage<HomeProps> = ({ posts }) => {
   return (
     <>
-      <Navbar theme={NAV_COLOR} waypoint={NAV_WAYPOINT} />
+      <Navbar colors={NAV_COLORS} waypoint={NAV_WAYPOINT} />
       <Header className="bg-primary-900 text-primary-50">
         <div className="container mx-auto py-12">
           <h1>Hello</h1>
