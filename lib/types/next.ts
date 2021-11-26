@@ -14,7 +14,9 @@ export interface ServerRuntimeConfig {
 }
 
 export interface PublicRuntimeConfig {
+  siteName: string;
   siteUrl: `http${"" | "s"}://${string}`;
+  siteLang: string;
   defaultSeo: DefaultSeoProps;
 }
 

@@ -7,6 +7,7 @@ import Drawer from "@/components/base/Drawer";
 import Logo from "@/components/base/Logo";
 import ToggleHamburger from "@/components/case/ToggleHamburger/ToggleHamburger";
 import useWaypoint from "@/lib/hooks/useWaypoint";
+import getConfig from "@/lib/utils/config";
 
 const NAME = "Navbar";
 
@@ -68,6 +69,8 @@ const NavbarItem = ({ children, href, isActive = false }: NavbarItemProps) => {
     </li>
   );
 };
+
+const { publicRuntimeConfig } = getConfig();
 
 const Navbar = React.forwardRef<BaseElement, NavbarProps>(
   (props, forwardedRef) => {
@@ -156,7 +159,10 @@ const Navbar = React.forwardRef<BaseElement, NavbarProps>(
               />
               <div className="mr-12 flex flex-grow justify-center lg:(ml-0 mr-4 flex-none w-auto)">
                 <Link href="/">
-                  <a className="flex items-center justify-center w-full h-full">
+                  <a
+                    className="flex items-center justify-center w-full h-full"
+                    title={publicRuntimeConfig.siteName}
+                  >
                     <Logo className={clsx("px-4 h-3.5", theme.logo)} />
                   </a>
                 </Link>

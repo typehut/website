@@ -31,14 +31,16 @@ const nextConfiguration = {
     defaultAuthor: "croutonn",
   },
   publicRuntimeConfig: {
+    siteName: process.env.SITE_NAME,
     siteUrl: process.env.SITE_URL,
+    siteLang: process.env.SITE_LOCALE.split("_").shift() || "en",
     defaultSeo: {
       titleTemplate: `%s | ${process.env.SITE_NAME}`,
       defaultTitle: process.env.SITE_NAME,
       description: process.env.SITE_DESCRIPTION,
       openGraph: {
         type: "website",
-        locale: "ja_JP",
+        locale: process.env.SITE_LOCALE,
         url: process.env.SITE_URL,
         site_name: process.env.SITE_NAME,
       },
