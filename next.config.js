@@ -1,3 +1,4 @@
+// @ts-check
 const path = require("path");
 
 const withPlugins = require("next-compose-plugins");
@@ -9,7 +10,7 @@ const plugins = [
   }),
 ];
 
-/** @type {import('next').NextConfig} */
+/** @type {import("./lib/types/next").NextConfig} */
 const nextConfiguration = {
   reactStrictMode: true,
   images: {
@@ -19,6 +20,15 @@ const nextConfiguration = {
   serverRuntimeConfig: {
     githubContentsRepo: process.env.GITHUB_CONTENTS_REPO,
     githubContentsBlogPath: process.env.GITHUB_CONTENTS_BLOG_PATH,
+    authors: {
+      croutonn: {
+        name: "croutonn",
+        bio: "cat lover.",
+        twitter: "croutnn",
+        github: "croutonn",
+      },
+    },
+    defaultAuthor: "croutonn",
   },
   publicRuntimeConfig: {
     siteUrl: process.env.SITE_URL,
@@ -37,15 +47,6 @@ const nextConfiguration = {
         cardType: "summary_large_image",
       },
     },
-    authors: {
-      croutonn: {
-        name: "croutonn",
-        bio: "cat lover.",
-        twitter: "croutnn",
-        github: "croutonn",
-      },
-    },
-    defaultAuthor: "croutonn",
   },
   webpack(config) {
     config.plugins.push(new WindiCSSWebpackPlugin());

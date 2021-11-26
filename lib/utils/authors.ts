@@ -1,16 +1,15 @@
-import getConfig from "next/config";
-
 import { AuthorType } from "@/lib/types/authorType";
+import getConfig from "@/lib/utils/config";
 
-const { publicRuntimeConfig } = getConfig();
+const { serverRuntimeConfig } = getConfig();
 
 export const authors: Record<string, AuthorType> = {
-  ...(publicRuntimeConfig.authors || {}),
+  ...(serverRuntimeConfig.authors || {}),
 };
 
 export const getAuthor = (
   name: string | undefined,
-  defaultAuthor: string = publicRuntimeConfig.defaultAuthor
+  defaultAuthor: string = serverRuntimeConfig.defaultAuthor
 ) => {
   if (typeof name === "undefined") return authors[defaultAuthor];
   if (authors.hasOwnProperty(name) && authors[name]) return authors[name];

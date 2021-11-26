@@ -1,19 +1,17 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { NextSeo, NextSeoProps } from "next-seo";
-import getConfig from "next/config";
 import * as React from "react";
 
 import * as PostAPI from "@/lib/api/post";
 import { PostType, SerializablePostMeta } from "@/lib/types/postType";
+import getConfig from "@/lib/utils/config";
 import { timestampToIso } from "@/lib/utils/format";
 
 import type { ParsedUrlQuery } from "querystring";
 
 const components: Record<string, React.ReactNode> = {};
-const { publicRuntimeConfig } = getConfig() as {
-  publicRuntimeConfig: Record<string, unknown>;
-};
+const { publicRuntimeConfig } = getConfig();
 
 export interface BlogParams extends ParsedUrlQuery {
   pid: PostType["pid"];

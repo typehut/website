@@ -1,8 +1,24 @@
-import { NextPage as NextPageOrigin } from "next";
+import { NextConfig as NextConfigBase } from "next";
+import { DefaultSeoProps } from "next-seo";
 
-import { NavbarColor } from "@/components/Navbar";
+import { AuthorType } from "@/lib/types/authorType";
 
-export type NextPage<P = {}, IP = P> = NextPageOrigin<P, IP> & {
-  theme?: NavbarColor;
-  waypoint?: number;
-};
+export interface ServerRuntimeConfig {
+  lruMaxSize?: number;
+  lruMaxAge?: number;
+  githubContentsRepo: `${string}/${string}`;
+  githubContentsBranch?: string;
+  githubContentsBlogPath: string;
+  authors: Record<string, AuthorType>;
+  defaultAuthor: keyof ServerRuntimeConfig["authors"];
+}
+
+export interface PublicRuntimeConfig {
+  siteUrl: `http${"" | "s"}://${string}`;
+  defaultSeo: DefaultSeoProps;
+}
+
+export interface NextConfig extends NextConfigBase {
+  publicRuntimeConfig: PublicRuntimeConfig;
+  serverRuntimeConfig: ServerRuntimeConfig;
+}
