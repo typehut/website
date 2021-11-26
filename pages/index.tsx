@@ -3,8 +3,8 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 
-import Header from "@/components/Header";
-import Navbar from "@/components/Navbar";
+import Header from "@/components/base/Header";
+import Navbar from "@/components/base/Navbar";
 import * as PostAPI from "@/lib/api/post";
 import { Unpacked } from "@/lib/types/misc";
 import styles from "@/styles/Home.module.css";

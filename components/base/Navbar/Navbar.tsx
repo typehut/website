@@ -3,9 +3,9 @@ import clsx from "clsx";
 import Link, { LinkProps } from "next/link";
 import * as React from "react";
 
-import Drawer from "@/components/Drawer";
-import HamburgerToggle from "@/components/HamburgerToggle/HamburgerToggle";
-import Logo from "@/components/Logo";
+import Drawer from "@/components/base/Drawer";
+import Logo from "@/components/base/Logo";
+import ToggleHamburger from "@/components/case/ToggleHamburger/ToggleHamburger";
 import useWaypoint from "@/lib/hooks/useWaypoint";
 
 const NAME = "Navbar";
@@ -148,7 +148,7 @@ const Navbar = React.forwardRef<BaseElement, NavbarProps>(
             ])}
           >
             <nav className="container mx-auto h-full relative flex items-stretch lg:justify-between">
-              <HamburgerToggle
+              <ToggleHamburger
                 target={drawerId}
                 expanded={expanded}
                 aria-label="Toggle navigation"

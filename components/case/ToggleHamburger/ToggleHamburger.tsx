@@ -1,16 +1,16 @@
 import clsx from "clsx";
 import * as React from "react";
 
-import ToggleExpand from "@/components/ToggleExpand";
+import ToggleExpand from "@/components/case/ToggleExpand";
 
-const NAME = "HamburgerToggle";
+const NAME = "ToggleHamburger";
 
 type BaseElement = React.ElementRef<typeof ToggleExpand>;
 type BaseElementProps = Omit<
   React.ComponentPropsWithoutRef<typeof ToggleExpand>,
   "expanded"
 >;
-export interface HamburgerToggleProps extends BaseElementProps {
+export interface ToggleHamburgerProps extends BaseElementProps {
   target: string;
   expanded: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
@@ -28,7 +28,7 @@ const Line: React.VFC<{
   );
 };
 
-const HamburgerToggle = React.forwardRef<BaseElement, HamburgerToggleProps>(
+const ToggleHamburger = React.forwardRef<BaseElement, ToggleHamburgerProps>(
   (
     { target, expanded: [expanded, setExpanded], ...buttonProps },
     forwardedRef
@@ -77,6 +77,6 @@ const HamburgerToggle = React.forwardRef<BaseElement, HamburgerToggleProps>(
   }
 );
 
-HamburgerToggle.displayName = NAME;
+ToggleHamburger.displayName = NAME;
 
-export default HamburgerToggle;
+export default ToggleHamburger;

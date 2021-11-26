@@ -4,7 +4,7 @@ import * as React from "react";
 
 import Drawer from ".";
 
-import HamburgerToggle from "@/components/HamburgerToggle/HamburgerToggle";
+import ToggleHamburger from "@/components/case/ToggleHamburger/ToggleHamburger";
 
 test("Should toggle visibility when button was clicked", async () => {
   const id = "hoge";
@@ -16,7 +16,7 @@ test("Should toggle visibility when button was clicked", async () => {
     };
     return (
       <>
-        <HamburgerToggle target={id} expanded={expanded} />
+        <ToggleHamburger target={id} expanded={expanded} />
         <Drawer {...props} />
       </>
     );

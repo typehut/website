@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import * as React from "react";
 
-import HamburgerToggle from ".";
+import ToggleHamburger from ".";
 
 test("Should toggle state of expanded on click", () => {
   const ExampleCode = () => {
@@ -11,7 +11,7 @@ test("Should toggle state of expanded on click", () => {
       target: "hoge",
       expanded,
     };
-    return <HamburgerToggle {...props} />;
+    return <ToggleHamburger {...props} />;
   };
 
   render(<ExampleCode />);
