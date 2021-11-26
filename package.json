@@ -34,7 +34,6 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^12.0.4",
-    "@swc/core": "^1.2.112",
     "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^12.1.2",
@@ -62,7 +61,6 @@
     "postcss-import": "^14.0.2",
     "postcss-nesting": "^10.0.2",
     "prettier": "^2.4.1",
-    "react-test-renderer": "^17.0.2",
     "stylelint": "^14.1.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-property-sort-order-smacss": "^8.0.0",
