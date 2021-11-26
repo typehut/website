@@ -26,10 +26,10 @@ test("Should toggle visibility when button was clicked", async () => {
   const drawer = document.getElementById(id);
   if (!drawer) throw new Error("The Drawer is not found.");
 
-  const button = screen.getByRole("button");
+  const buttons = screen.getAllByRole("button");
   expect(drawer).toHaveClass("invisible");
-  userEvent.click(button);
-  expect(button).toHaveAttribute("data-state", "on");
+  userEvent.click(buttons[0]);
+  expect(buttons[0]).toHaveAttribute("data-state", "on");
   fireEvent.transitionRun(drawer);
   fireEvent.transitionEnd(drawer);
   expect(drawer).not.toHaveClass("invisible");

@@ -6,6 +6,7 @@ import useDocumentScrollable from "@/lib/hooks/useDocumentScrollable";
 import useEnsuredForwardedRef from "@/lib/hooks/useEnsuredForwardedRef";
 
 const NAME = "Drawer";
+const CLOSE_BUTTON_EVENT_KEY = "Enter";
 
 type BaseElement = React.ElementRef<"div">;
 type BaseElementProps = JSX.IntrinsicElements["div"];
@@ -28,6 +29,16 @@ const Drawer = React.forwardRef<BaseElement, DrawerProps>(
     const closeDrawer = React.useCallback(
       () => setExpanded(false),
       [setExpanded]
+    );
+    const closeDrawerWithKeydown = React.useCallback<
+      React.KeyboardEventHandler<HTMLDivElement>
+    >(
+      (event) => {
+        if (event.key === CLOSE_BUTTON_EVENT_KEY) {
+          closeDrawer();
+        }
+      },
+      [closeDrawer]
     );
     const [, setDocumentScrollable] = useDocumentScrollable(
       scrollingElementRef,
@@ -84,7 +95,10 @@ const Drawer = React.forwardRef<BaseElement, DrawerProps>(
               "opacity-0": !expanded,
             }
           )}
+          role="button"
+          tabIndex={-1}
           onClick={closeDrawer}
+          onKeyDown={closeDrawerWithKeydown}
         ></div>
       </>
     );
