@@ -1,3 +1,5 @@
+import { useCallbackRef } from "@radix-ui/react-use-callback-ref";
+import { useEscapeKeydown } from "@radix-ui/react-use-escape-keydown";
 import clsx from "clsx";
 import * as React from "react";
 
@@ -6,7 +8,6 @@ import useDocumentScrollable from "@/lib/hooks/useDocumentScrollable";
 import useEnsuredForwardedRef from "@/lib/hooks/useEnsuredForwardedRef";
 
 const NAME = "Drawer";
-const CLOSE_BUTTON_EVENT_KEY = "Enter";
 
 type BaseElement = React.ElementRef<"div">;
 type BaseElementProps = JSX.IntrinsicElements["div"];
@@ -26,24 +27,12 @@ const Drawer = React.forwardRef<BaseElement, DrawerProps>(
     const scrollingElementRef = React.useRef<HTMLDivElement>(null);
     const [invisible, setInvisible] = React.useState(true);
     const [translating, setTranslating] = React.useState(false);
-    const closeDrawer = React.useCallback(
-      () => setExpanded(false),
-      [setExpanded]
-    );
-    const closeDrawerWithKeydown = React.useCallback<
-      React.KeyboardEventHandler<HTMLDivElement>
-    >(
-      (event) => {
-        if (event.key === CLOSE_BUTTON_EVENT_KEY) {
-          closeDrawer();
-        }
-      },
-      [closeDrawer]
-    );
+    const closeDrawer = useCallbackRef(() => setExpanded(false));
     const [, setDocumentScrollable] = useDocumentScrollable(
       scrollingElementRef,
       { reserveScrollBarGap: true }
     );
+    useEscapeKeydown(closeDrawer);
 
     React.useEffect(() => {
       setDocumentScrollable(!expanded);
@@ -95,10 +84,9 @@ const Drawer = React.forwardRef<BaseElement, DrawerProps>(
               "opacity-0": !expanded,
             }
           )}
-          role="button"
+          role="presentation"
           tabIndex={-1}
           onClick={closeDrawer}
-          onKeyDown={closeDrawerWithKeydown}
         ></div>
       </>
     );
