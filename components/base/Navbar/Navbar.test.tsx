@@ -1,5 +1,4 @@
 import { render, fireEvent, act } from "@testing-library/react";
-import * as React from "react";
 
 import Navbar from ".";
 

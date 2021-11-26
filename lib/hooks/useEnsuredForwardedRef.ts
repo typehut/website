@@ -1,11 +1,11 @@
-import { MutableRefObject, useEffect, useRef } from "react";
+import * as React from "react";
 
 const useEnsuredForwardedRef = <T>(
-  forwardedRef: MutableRefObject<T>
-): MutableRefObject<T> => {
-  const ensuredRef = useRef(forwardedRef && forwardedRef.current);
+  forwardedRef: React.MutableRefObject<T>
+): React.MutableRefObject<T> => {
+  const ensuredRef = React.useRef(forwardedRef && forwardedRef.current);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!forwardedRef) {
       return;
     }

@@ -3,7 +3,7 @@ import {
   useMountEffect,
   useRafCallback,
 } from "@react-hookz/web";
-import { RefObject, useState } from "react";
+import * as React from "react";
 
 import { hasOwnProperty } from "@/lib/utils/misc";
 
@@ -13,9 +13,9 @@ export type ScrollPosition = {
 };
 
 const useScrollPosition = <T extends EventTarget>(
-  target: T | RefObject<T> | null | undefined
+  target: T | React.RefObject<T> | null | undefined
 ) => {
-  const [scrollPosition, setScrollPosition] = useState<ScrollPosition>({
+  const [scrollPosition, setScrollPosition] = React.useState<ScrollPosition>({
     x: null,
     y: null,
   });

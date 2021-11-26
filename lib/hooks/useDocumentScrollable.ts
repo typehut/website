@@ -3,17 +3,17 @@ import {
   disableBodyScroll,
   enableBodyScroll,
 } from "body-scroll-lock";
-import { useEffect, useState, RefObject } from "react";
+import * as React from "react";
 
 import { hasOwnProperty } from "@/lib/utils/misc";
 
 const useDocumentScrollable = <T extends HTMLElement>(
-  target: T | RefObject<T>,
+  target: T | React.RefObject<T>,
   options?: Parameters<typeof disableBodyScroll>[1]
 ) => {
-  const [scrollable, setScrollable] = useState<boolean>(true);
+  const [scrollable, setScrollable] = React.useState<boolean>(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const copyRef = target;
     const tgt =
       target && hasOwnProperty(target, "current")

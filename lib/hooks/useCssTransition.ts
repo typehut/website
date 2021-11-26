@@ -1,5 +1,4 @@
 import { useEventListener } from "@react-hookz/web";
-import * as React from "react";
 
 type EventListener =
   | EventListenerOrEventListenerObject

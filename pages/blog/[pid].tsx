@@ -1,7 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { NextSeo, NextSeoProps } from "next-seo";
-import * as React from "react";
 
 import * as PostAPI from "@/lib/api/post";
 import { PostType, SerializablePostMeta } from "@/lib/types/postType";
