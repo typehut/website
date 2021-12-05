@@ -1,18 +1,19 @@
-import {
-  useEventListener,
-  useRafCallback,
-  useThrottledCallback,
-} from "@react-hookz/web";
+import { useEventListener, useRafCallback } from "@react-hookz/web";
+import constate from "constate";
 import * as React from "react";
 
 import { hasOwnProperty } from "@/lib/utils/misc";
 
-import type { ScrollPositionProviderProps } from "./ScrollPositionProvider.types";
+export interface ScrollPosition {
+  isScrollingDown: boolean;
+  x: number;
+  y: number;
+}
 
-export const ScrollPositionProvider: React.FC<ScrollPositionProviderProps> = ({
-  children,
+const useScrollPositionProvider = ({
   container,
-  context: Context,
+}: {
+  container: Element | Window | React.RefObject<Element> | null;
 }) => {
   const scrollContainer = container
     ? hasOwnProperty(container, "current")
@@ -31,7 +32,7 @@ export const ScrollPositionProvider: React.FC<ScrollPositionProviderProps> = ({
   const [scrollYValue, setScrollYValue] = React.useState(0);
 
   // handle scroll
-  const onScroll = React.useCallback(() => {
+  const [onScroll] = useRafCallback(() => {
     if (!scrollContainer) return;
     // `scrollX` for `window`, `scrollLeft` for an element
     const scrollContainerX = hasOwnProperty(scrollContainer, "scrollLeft")
@@ -48,32 +49,42 @@ export const ScrollPositionProvider: React.FC<ScrollPositionProviderProps> = ({
       scrollContainerX !== scrollX.current ||
       scrollContainerY !== scrollY.current
     ) {
+      const prevValue = {
+        isScrollingDown: isScrollingDown.current,
+        scrollX: scrollX.current,
+        scrollY: scrollY.current,
+      };
       isScrollingDown.current = scrollContainerY > scrollY.current;
       scrollX.current = scrollContainerX;
       scrollY.current = scrollContainerY;
 
       // trigger re-render
-      setIsScrollingDownValue(isScrollingDown.current);
-      setScrollXValue(scrollX.current);
-      setScrollYValue(scrollY.current);
+      if (prevValue.isScrollingDown !== isScrollingDown.current) {
+        setIsScrollingDownValue(isScrollingDown.current);
+      }
+      if (prevValue.scrollX !== scrollX.current) {
+        setScrollXValue(scrollX.current);
+      }
+      if (prevValue.scrollY !== scrollY.current) {
+        setScrollYValue(scrollY.current);
+      }
     }
-  }, [scrollContainer]);
+  });
 
-  useEventListener(scrollContainer, "scroll", useRafCallback(onScroll)[0], {
+  useEventListener(scrollContainer, "scroll", onScroll, {
     passive: true,
   });
-  useEventListener(
-    scrollContainer,
-    "resize",
-    useThrottledCallback(onScroll, [scrollContainer], 100),
-    { passive: true }
-  );
+  useEventListener(scrollContainer, "resize", onScroll, { passive: true });
 
-  return (
-    <Context.isScrollingDown.Provider value={isScrollingDownValue}>
-      <Context.x.Provider value={scrollXValue}>
-        <Context.y.Provider value={scrollYValue}>{children}</Context.y.Provider>
-      </Context.x.Provider>
-    </Context.isScrollingDown.Provider>
-  );
+  return {
+    isScrollingDown: isScrollingDownValue,
+    x: scrollXValue,
+    y: scrollYValue,
+  };
 };
+
+const [ScrollPositionProvider, useScrollPositionContext] = constate(
+  useScrollPositionProvider
+);
+
+export { ScrollPositionProvider, useScrollPositionContext };

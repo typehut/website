@@ -1,5 +1,6 @@
 export const hasOwnProperty = <
-  T extends Record<string | number | symbol, unknown>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  T extends Record<string | number | symbol, any>,
   K extends string | number | symbol
 >(
   obj: T,

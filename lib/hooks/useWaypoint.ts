@@ -1,7 +1,7 @@
 import { useEventListener, useThrottledCallback } from "@react-hookz/web";
 import * as React from "react";
 
-import { WindowScrollPositionContext } from "@/lib/context/windowScrollPosition";
+import { useScrollPositionContext } from "@/lib/context/ScrollPosition";
 import { hasOwnProperty, isBrowser } from "@/lib/utils/misc";
 
 export type Waypoint = (
@@ -10,6 +10,7 @@ export type Waypoint = (
     }
   | {
       ref: React.RefObject<Element>;
+      offset?: number;
     }
 ) & { handler: (isBelow: boolean) => unknown; once?: boolean };
 
@@ -29,7 +30,7 @@ const getOffset = (el: Element | null) => {
 };
 
 export const useWaypoint = (waypoints: Waypoint[]) => {
-  const scrollY = React.useContext(WindowScrollPositionContext.y);
+  const { y: scrollY } = useScrollPositionContext();
   const scrollYRef = React.useRef<number>(scrollY);
   const waypointMap = React.useRef<Map<Waypoint, WaypointMapValue>>(
     new Map<Waypoint, WaypointMapValue>()
@@ -39,7 +40,7 @@ export const useWaypoint = (waypoints: Waypoint[]) => {
     waypoints.forEach((waypoint) => {
       const y = hasOwnProperty(waypoint, "y")
         ? waypoint.y + 1
-        : getOffset(waypoint.ref.current);
+        : getOffset(waypoint.ref.current) + (waypoint?.offset || 0);
       const mappedWaypoint = waypointMap.current.get(waypoint);
       waypointMap.current.set(waypoint, {
         y,
@@ -55,7 +56,7 @@ export const useWaypoint = (waypoints: Waypoint[]) => {
   // Remap when updated waypoints
   React.useEffect(remapWaypoints, [waypoints]);
   useEventListener(
-    typeof window === "undefined" ? null : window,
+    isBrowser ? window : null,
     "resize",
     useThrottledCallback(remapWaypoints, [waypoints], 100),
     { passive: true }

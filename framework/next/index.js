@@ -6,10 +6,14 @@ const withPlugins = require("next-compose-plugins");
  * @param {import("../../lib/types/next").NextConfig} nextConfig
  */
 module.exports = (config, nextConfig, plugins) => {
-  return withPlugins(plugins, {
+  const withoutPluginConfig = {
     ...require("./runtimeConfig")(config),
     ...require("./webpack")(config),
     ...require("./images")(config),
     ...nextConfig,
-  });
+  };
+  if (plugins.length === 0) {
+    return withoutPluginConfig;
+  }
+  return withPlugins(plugins, withoutPluginConfig);
 };

@@ -2,9 +2,9 @@ import Head from "next/head";
 import { DefaultSeo } from "next-seo";
 import * as React from "react";
 
-import { ScrollPositionProvider } from "@/components/base/ScrollPositionProvider";
-import { WindowScrollPositionContext } from "@/lib/context/windowScrollPosition";
+import { ScrollPositionProvider } from "@/lib/context/ScrollPosition";
 import { DEFAULT_SEO_OPTIONS } from "@/lib/utils/constant";
+import { isBrowser } from "@/lib/utils/misc";
 
 import type { AppProps } from "next/app";
 
@@ -19,10 +19,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <DefaultSeo {...DEFAULT_SEO_OPTIONS} />
-      <ScrollPositionProvider
-        context={WindowScrollPositionContext}
-        container={typeof window === "undefined" ? null : window}
-      >
+      <ScrollPositionProvider container={isBrowser ? window : null}>
         <Component {...pageProps} />
       </ScrollPositionProvider>
     </>

@@ -1,10 +1,11 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import { Keys } from "@headlessui/react/dist/components/keyboard";
+import { useKeyboardEvent } from "@react-hookz/web";
 import * as React from "react";
 
 import { Burger } from "@/components/base/Burger";
-import { useKeydown } from "@/lib/hooks/useKeydown";
 import { useScrollable } from "@/lib/hooks/useScrollable";
+import { isBrowser } from "@/lib/utils/misc";
 
 import type { DrawerProps } from "./Drawer.types";
 
@@ -12,14 +13,14 @@ const DrawerContent: React.FC<
   DrawerProps & { open: boolean; close: () => void }
 > = ({ open, close, className, children }) => {
   const [, setScrollable] = useScrollable(
-    typeof document === "undefined" ? null : document.scrollingElement
+    isBrowser ? document.scrollingElement : null
   );
 
   React.useEffect(() => {
     setScrollable(!open);
   }, [open, setScrollable]);
 
-  useKeydown([Keys.Escape], close);
+  useKeyboardEvent(Keys.Escape, close, [], { eventOptions: { passive: true } });
 
   return (
     <div className={className}>
