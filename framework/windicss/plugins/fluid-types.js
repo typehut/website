@@ -97,7 +97,9 @@ const fluidTypePlugin = plugin(
 
         // Check if value is a number
         if (Number.isInteger(value)) {
-          output.fontSize = calcModularScale(value);
+          output.fontSize = Number.isInteger(value)
+            ? calcModularScale(value)
+            : value;
         }
 
         // Check if value is array with length 1

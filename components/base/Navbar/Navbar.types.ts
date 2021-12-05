@@ -1,41 +1,21 @@
-import type { DrawerProps } from "@/components/base/Drawer";
-
 import type { LinkProps } from "next/link";
 import type * as React from "react";
+import type { Waypoint } from "@/lib/hooks/useWaypoint";
 
-export type NavbarColors = {
-  text: string;
-  bg: string;
-  logo?: string;
-  textScrolled?: string;
-  bgScrolled?: string;
-  logoScrolled?: string;
-};
+export interface NavbarTheme {
+  textColor: string;
+  bgColor: string;
+  logoColor: string;
+  shadow: boolean;
+}
 
 export interface NavbarProps {
-  colors?: NavbarColors;
-  waypoint?: number;
   className?: string;
+  theme?: NavbarTheme;
+  waypoints?: Waypoint[];
 }
 
-export interface NavbarItemProps extends React.PropsWithChildren<{}> {
+export interface NavbarItemProps
+  extends React.PropsWithChildren<Record<string, unknown>> {
   href: LinkProps["href"];
-}
-
-interface DrawerState extends DrawerProps {
-  ref: React.RefObject<HTMLDivElement>;
-}
-
-interface ThemeState {
-  colors: {
-    text: string;
-    bg: string;
-    logo: string;
-  };
-  shadow: string | null;
-}
-
-export interface NavbarState {
-  drawer: DrawerState;
-  theme: ThemeState;
 }

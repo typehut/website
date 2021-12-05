@@ -1,10 +1,14 @@
-import { IdProvider } from "@radix-ui/react-id";
-import { DefaultSeo } from "next-seo";
-import { AppProps } from "next/app";
 import Head from "next/head";
-import "windi.css";
+import { DefaultSeo } from "next-seo";
+import * as React from "react";
 
+import { ScrollPositionProvider } from "@/components/base/ScrollPositionProvider";
+import { WindowScrollPositionContext } from "@/lib/context/windowScrollPosition";
 import { DEFAULT_SEO_OPTIONS } from "@/lib/utils/constant";
+
+import type { AppProps } from "next/app";
+
+import "windi.css";
 import "@/styles/globals.css";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
@@ -15,9 +19,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <DefaultSeo {...DEFAULT_SEO_OPTIONS} />
-      <IdProvider>
+      <ScrollPositionProvider
+        context={WindowScrollPositionContext}
+        container={typeof window === "undefined" ? null : window}
+      >
         <Component {...pageProps} />
-      </IdProvider>
+      </ScrollPositionProvider>
     </>
   );
 };

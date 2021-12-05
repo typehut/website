@@ -1,7 +1,6 @@
-import { NextConfig as NextConfigBase } from "next";
-import { DefaultSeoProps } from "next-seo";
-
-import { AuthorType } from "@/lib/types/authorType";
+import type { NextConfig as NextConfigBase } from "next";
+import type { DefaultSeoProps } from "next-seo";
+import type { AuthorType } from "@/lib/types/authorType";
 
 export interface ServerRuntimeConfig {
   lruMaxSize?: number;

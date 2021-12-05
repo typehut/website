@@ -2,8 +2,8 @@
 import colors from "windicss/colors";
 import { defineConfig } from "windicss/helpers";
 
-import fluidTypePlugin from "./windicss-plugin-fluid-types";
-import variableColorsPlugin from "./windicss-plugin-variable-colors";
+import fluidTypePlugin from "./framework/windicss/plugins/fluid-types";
+import variableColorsPlugin from "./framework/windicss/plugins/variable-colors";
 
 export default defineConfig({
   mode: "jit",

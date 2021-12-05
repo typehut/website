@@ -1,5 +1,6 @@
-import { AuthorType } from "@/lib/types/authorType";
-import getConfig from "@/lib/utils/config";
+import { getConfig } from "@/lib/utils/config";
+
+import type { AuthorType } from "@/lib/types/authorType";
 
 const { serverRuntimeConfig } = getConfig();
 

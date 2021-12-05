@@ -7,13 +7,14 @@ import * as React from "react";
 
 import { hasOwnProperty } from "@/lib/utils/misc";
 
-const useDocumentScrollable = <T extends HTMLElement>(
-  target: T | React.RefObject<T>,
+export const useScrollable = <T extends Element>(
+  target: T | React.RefObject<T> | null,
   options?: Parameters<typeof disableBodyScroll>[1]
 ) => {
   const [scrollable, setScrollable] = React.useState<boolean>(true);
 
   React.useEffect(() => {
+    if (!target) return;
     const copyRef = target;
     const tgt =
       target && hasOwnProperty(target, "current")
@@ -40,5 +41,3 @@ const useDocumentScrollable = <T extends HTMLElement>(
 
   return [scrollable, setScrollable] as const;
 };
-
-export default useDocumentScrollable;

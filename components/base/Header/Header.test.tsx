@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import Header from ".";
+import { Header } from ".";
 
 test("Should have children", () => {
   const testMessage = "Test Message";

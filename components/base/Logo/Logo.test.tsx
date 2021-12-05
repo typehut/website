@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
-import Logo from ".";
+import { Logo } from ".";
 
 test("Should have <svg>", () => {
   const ExampleCode = () => {

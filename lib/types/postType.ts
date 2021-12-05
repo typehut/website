@@ -1,7 +1,7 @@
-import { OpenGraphArticle, OpenGraphMedia } from "next-seo/lib/types";
-
-import { AuthorType } from "@/lib/types/authorType";
 import { getAuthor } from "@/lib/utils/author";
+
+import type { OpenGraphArticle, OpenGraphMedia } from "next-seo/lib/types";
+import type { AuthorType } from "@/lib/types/authorType";
 
 export type PostMeta = {
   title: string;

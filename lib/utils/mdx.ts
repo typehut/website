@@ -1,12 +1,13 @@
 import rehypePrism from "@mapbox/rehype-prism";
 import matter from "gray-matter";
-import { MDXRemoteSerializeResult } from "next-mdx-remote";
-import { SerializeOptions } from "next-mdx-remote/dist/types";
 import { serialize } from "next-mdx-remote/serialize";
 import QuickLRU from "quick-lru";
 import remarkBehead from "remark-behead";
 
 import { LRU_MAX_AGE, LRU_MAX_SIZE } from "./constant";
+
+import type { MDXRemoteSerializeResult } from "next-mdx-remote";
+import type { SerializeOptions } from "next-mdx-remote/dist/types";
 
 export const cache = new QuickLRU({
   maxSize: LRU_MAX_SIZE,

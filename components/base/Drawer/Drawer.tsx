@@ -1,113 +1,87 @@
-import { useCallbackRef } from "@radix-ui/react-use-callback-ref";
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import { useEscapeKeydown } from "@radix-ui/react-use-escape-keydown";
-import clsx from "clsx";
+import { Disclosure, Transition } from "@headlessui/react";
+import { Keys } from "@headlessui/react/dist/components/keyboard";
 import * as React from "react";
 
-import useCssTransition from "@/lib/hooks/useCssTransition";
-import useDocumentScrollable from "@/lib/hooks/useDocumentScrollable";
-import useEnsuredForwardedRef from "@/lib/hooks/useEnsuredForwardedRef";
+import { Burger } from "@/components/base/Burger";
+import { useKeydown } from "@/lib/hooks/useKeydown";
+import { useScrollable } from "@/lib/hooks/useScrollable";
 
-const NAME = "Drawer";
+import type { DrawerProps } from "./Drawer.types";
 
-type BaseElement = React.ElementRef<"div">;
-type BaseElementProps = JSX.IntrinsicElements["div"];
-export interface DrawerProps extends React.PropsWithChildren<BaseElementProps> {
-  id: string;
-  expanded?: boolean;
-  defaultExpanded?: boolean;
-  onExpandedChange?(expanded: boolean): void;
-}
+const DrawerContent: React.FC<
+  DrawerProps & { open: boolean; close: () => void }
+> = ({ open, close, className, children }) => {
+  const [, setScrollable] = useScrollable(
+    typeof document === "undefined" ? null : document.scrollingElement
+  );
 
-const Drawer = React.forwardRef<BaseElement, DrawerProps>(
-  (
-    {
-      children,
-      id,
-      expanded: expandedProp,
-      defaultExpanded = false,
-      onExpandedChange,
-      ...attrs
-    }: DrawerProps,
-    forwardedRef
-  ) => {
-    const [expanded = false, setExpanded] = useControllableState({
-      prop: expandedProp,
-      onChange: onExpandedChange,
-      defaultProp: defaultExpanded,
-    });
+  React.useEffect(() => {
+    setScrollable(!open);
+  }, [open, setScrollable]);
 
-    const ensuredForwardRef = useEnsuredForwardedRef<HTMLDivElement>(
-      forwardedRef as React.MutableRefObject<HTMLDivElement>
-    );
-    const scrollingElementRef = React.useRef<HTMLDivElement>(null);
-    const [invisible, setInvisible] = React.useState(true);
-    const [translating, setTranslating] = React.useState(false);
-    const closeDrawer = useCallbackRef(() => setExpanded(false));
-    const [, setDocumentScrollable] = useDocumentScrollable(
-      scrollingElementRef,
-      { reserveScrollBarGap: true }
-    );
-    useEscapeKeydown(closeDrawer);
+  useKeydown([Keys.Escape], close);
 
-    React.useEffect(() => {
-      setDocumentScrollable(!expanded);
-    }, [expanded, setDocumentScrollable]);
-
-    useCssTransition({
-      ref: ensuredForwardRef,
-      run: () => {
-        setTranslating(true);
-        if (invisible) setInvisible(false);
-      },
-      end: (e: Event) => {
-        setTranslating(false);
-        if (!expanded && !invisible) setInvisible(true);
-      },
-    });
-
-    return (
-      <>
-        <div
-          ref={ensuredForwardRef}
-          id={id}
-          {...attrs}
-          className={clsx(
-            "drawer fixed top-0 right-14 bottom-0 left-0 max-w-xs h-screen z-30 transition-transform duration-350 ease-out-sharp transform-gpu contain-content bg-white lg:hidden",
-            {
-              invisible: invisible,
-              "-translate-x-full": !expanded,
-            },
-            attrs.className
-          )}
-          aria-label="Navigation drawer"
+  return (
+    <div className={className}>
+      <Disclosure.Button className="relative z-20 tap-highlight-transparent focus:outline-transparent">
+        <Burger
+          open={open}
+          aria-label="Toggle navigation"
+          className="block w-12 h-12"
+        />
+      </Disclosure.Button>
+      <Transition as={React.Fragment} unmount={false} show={open}>
+        <Disclosure.Panel
+          unmount={false}
+          as="div"
+          className="fixed inset-0 z-10 overflow-y-auto"
+          aria-hidden={!open}
         >
-          <div
-            ref={scrollingElementRef}
-            className="flex flex-col absolute top-0 right-0 bottom-32 left-0 overflow-y-auto h-full min-h-16"
+          <Transition.Child
+            as={React.Fragment}
+            unmount={false}
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
           >
-            <div className="pt-scroll-padding bg-primary-900"></div>
-            {children}
-          </div>
-        </div>
+            <Disclosure.Button
+              as="div"
+              className="fixed inset-0 bg-black bg-opacity-40 transition-opacity duration-200"
+            ></Disclosure.Button>
+          </Transition.Child>
 
-        <div
-          className={clsx(
-            "drawer-backdrop fixed top-0 right-0 bottom-0 left-0 z-20 transition-opacity duration-200 bg-black bg-opacity-40 tap-highlight-transparent cursor-pointer lg:hidden",
-            {
-              invisible: invisible,
-              "pointer-events-auto": expanded || translating,
-              "opacity-0": !expanded,
-            }
-          )}
-          role="presentation"
-          tabIndex={-1}
-          onClick={closeDrawer}
-        ></div>
-      </>
-    );
-  }
-);
+          <Transition.Child
+            as={React.Fragment}
+            unmount={false}
+            enter="duration-350 ease-out-sharp"
+            enterFrom="-translate-x-full"
+            enterTo="translate-x-0"
+            leave="duration-300 ease-out"
+            leaveFrom="translate-x-0"
+            leaveTo="-translate-x-full"
+          >
+            <div className="fixed top-0 right-14 bottom-0 left-0 max-w-xs h-screen z-20 contain-content bg-white transition-transform transform-gpu">
+              <div className="flex flex-col absolute top-0 right-0 bottom-32 left-0 overflow-y-auto h-full min-h-16">
+                <div className="pt-scroll-padding bg-primary-900"></div>
+                {children}
+              </div>
+            </div>
+          </Transition.Child>
+        </Disclosure.Panel>
+      </Transition>
+    </div>
+  );
+};
 
-Drawer.displayName = NAME;
-export default Drawer;
+export const Drawer: React.FC<DrawerProps> = ({ children, className }) => {
+  return (
+    <Disclosure>
+      {({ open, close }: { open: boolean; close: () => void }) => (
+        <DrawerContent open={open} close={close} className={className}>
+          {children}
+        </DrawerContent>
+      )}
+    </Disclosure>
+  );
+};

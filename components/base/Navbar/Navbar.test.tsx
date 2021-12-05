@@ -1,6 +1,12 @@
-import { render, fireEvent, act } from "@testing-library/react";
+import { act, fireEvent, render } from "@testing-library/react";
+import * as React from "react";
 
-import Navbar from ".";
+import { ScrollPositionProvider } from "@/components/base/ScrollPositionProvider";
+import { WindowScrollPositionContext } from "@/lib/context/windowScrollPosition";
+import { Navbar } from ".";
+
+import type { NavbarTheme } from "@/components/base/Navbar/Navbar.types";
+import type { Waypoint } from "@/lib/hooks/useWaypoint";
 
 const sto = global.setTimeout;
 const sleep = (msec: number) => new Promise((resolve) => sto(resolve, msec));
@@ -30,42 +36,66 @@ describe("Navbar", () => {
   });
 
   it("Should change class when scrollY crossed waypoint", async () => {
-    const waypoint = 48;
+    const WAYPOINT = 48;
+    const DEFAULT_THEME: NavbarTheme = {
+      textColor: "primary-900",
+      bgColor: "primary-50",
+      logoColor: "primary-900",
+      shadow: false,
+    };
+    const WAYPOINT_THEME: NavbarTheme = {
+      textColor: "primary-50",
+      bgColor: "primary-900",
+      logoColor: "white",
+      shadow: true,
+    };
 
     const ExampleCode = () => {
-      const props = {
-        colors: {
-          text: "primary-900",
-          bg: "primary-50",
-          logo: "primary-900",
-          textScrolled: "primary-50",
-          bgScrolled: "primary-900",
-          logoScrolled: "white",
+      const [theme, setTheme] = React.useState(DEFAULT_THEME);
+      const waypoints: Waypoint[] = [
+        {
+          y: WAYPOINT,
+          handler: (isBelow) => {
+            setTheme(isBelow ? WAYPOINT_THEME : DEFAULT_THEME);
+          },
         },
-        waypoint,
-      } as const;
+      ];
       return (
-        <>
-          <Navbar {...props} />
+        <ScrollPositionProvider
+          context={WindowScrollPositionContext}
+          container={window}
+        >
+          <Navbar theme={theme} waypoints={waypoints} />
           <div style={{ height: "1024px" }}></div>
-        </>
+        </ScrollPositionProvider>
       );
     };
 
     render(<ExampleCode />);
 
     const fixedElement = document.querySelector(".fixed");
-    if (!fixedElement) throw new Error("The fixed element is not found.");
+    expect(fixedElement).toBeDefined();
+    expect(fixedElement).toHaveClass(
+      `text-${DEFAULT_THEME.textColor}`,
+      `bg-${DEFAULT_THEME.bgColor}`
+    );
+    await act(() => scrollTo(WAYPOINT));
 
-    expect(fixedElement).toHaveClass("text-primary-900", "bg-primary-50");
-    await act(() => scrollTo(waypoint));
+    expect(fixedElement).toHaveClass(
+      `text-${DEFAULT_THEME.textColor}`,
+      `bg-${DEFAULT_THEME.bgColor}`
+    );
+    await act(() => scrollTo(WAYPOINT + 1));
 
-    expect(fixedElement).toHaveClass("text-primary-900", "bg-primary-50");
-    await act(() => scrollTo(waypoint + 1));
-
-    expect(fixedElement).toHaveClass("text-primary-50", "bg-primary-900");
+    expect(fixedElement).toHaveClass(
+      `text-${WAYPOINT_THEME.textColor}`,
+      `bg-${WAYPOINT_THEME.bgColor}`
+    );
     await act(() => scrollTo(0));
 
-    expect(fixedElement).toHaveClass("text-primary-900", "bg-primary-50");
+    expect(fixedElement).toHaveClass(
+      `text-${DEFAULT_THEME.textColor}`,
+      `bg-${DEFAULT_THEME.bgColor}`
+    );
   });
 });

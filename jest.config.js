@@ -12,6 +12,7 @@ module.exports = {
     "!**/node_modules/**",
   ],
   setupFilesAfterEnv: ["<rootDir>/tests/setup.js"],
+  resolver: "<rootDir>/tests/resolver.js",
   moduleNameMapper: {
     "^.+\\.module\\.css$": "identity-obj-proxy",
     "^.+\\.css$": "<rootDir>/tests/mocks/styleMock.js",
@@ -28,7 +29,10 @@ module.exports = {
   transform: {
     "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
   },
-  transformIgnorePatterns: ["/node_modules/", "^.+\\.module\\.css$"],
+  transformIgnorePatterns: [
+    "/node_modules/(?!@headlessui/react)",
+    "^.+\\.module\\.css$",
+  ],
   reporters: [
     "default",
     [

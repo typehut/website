@@ -1,16 +1,20 @@
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { NextSeo, NextSeoProps } from "next-seo";
+import { MDXRemote } from "next-mdx-remote";
+import { NextSeo } from "next-seo";
 
 import * as PostAPI from "@/lib/api/post";
-import { PostType, SerializablePostMeta } from "@/lib/types/postType";
-import getConfig from "@/lib/utils/config";
+import { getConfig } from "@/lib/utils/config";
 import { timestampToIso } from "@/lib/utils/format";
 
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import type { MDXRemoteSerializeResult } from "next-mdx-remote";
+import type { NextSeoProps } from "next-seo";
 import type { ParsedUrlQuery } from "querystring";
+import type { PostType, SerializablePostMeta } from "@/lib/types/postType";
 
 const components: Record<string, React.ReactNode> = {};
-const { publicRuntimeConfig } = getConfig();
+const {
+  publicRuntimeConfig: { siteUrl },
+} = getConfig();
 
 export interface BlogParams extends ParsedUrlQuery {
   pid: PostType["pid"];
@@ -23,7 +27,7 @@ const Blog: NextPage<BlogProps> = ({ pid, body, meta }) => {
   const nextSeoProps: NextSeoProps = {
     title: meta.title,
     description: meta.description,
-    canonical: `${publicRuntimeConfig.siteUrl}/blog/${pid}`,
+    canonical: `${siteUrl}/blog/${pid}`,
     twitter: {
       handle: meta.author?.twitter ?? `@${meta.author.twitter}`,
     },
@@ -36,7 +40,7 @@ const Blog: NextPage<BlogProps> = ({ pid, body, meta }) => {
           ? timestampToIso(meta.modified_at)
           : undefined,
         tags: meta?.tags,
-        authors: [`${publicRuntimeConfig.siteUrl}/authors/${meta.author.name}`],
+        authors: [`${siteUrl}/authors/${meta.author.name}`],
       },
     },
   };
@@ -53,7 +57,7 @@ const Blog: NextPage<BlogProps> = ({ pid, body, meta }) => {
   );
 };
 
-const getStaticPaths: GetStaticPaths<BlogParams> = async (context) => {
+const getStaticPaths: GetStaticPaths<BlogParams> = async () => {
   try {
     const paths = await PostAPI.paths();
     return {
@@ -69,6 +73,7 @@ const getStaticPaths: GetStaticPaths<BlogParams> = async (context) => {
 const getStaticProps: GetStaticProps<BlogProps, BlogParams> = async ({
   params,
 }) => {
+  /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
   const pid = params!.pid;
 
   try {

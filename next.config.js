@@ -52,6 +52,7 @@ const nextConfiguration = {
   },
   webpack(config) {
     config.plugins.push(new WindiCSSWebpackPlugin());
+    config.resolve.extensions.splice(0, 0, ".esm.js");
     return config;
   },
 };

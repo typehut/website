@@ -1,6 +1,6 @@
-import { DefaultSeoProps } from "next-seo";
+import { getConfig } from "@/lib/utils/config";
 
-import getConfig from "@/lib/utils/config";
+import type { DefaultSeoProps } from "next-seo";
 
 const { publicRuntimeConfig, serverRuntimeConfig } = getConfig();
 
@@ -21,6 +21,29 @@ export const LRU_MAX_AGE = serverRuntimeConfig?.lruMaxAge || Infinity;
 
 export const DEFAULT_SEO_OPTIONS =
   publicRuntimeConfig.defaultSeo as Readonly<DefaultSeoProps>;
+
+export const SCREEN_SIZES = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  "2xl": 1536,
+} as const;
+
+type ScreenSizesQueries = Record<
+  keyof typeof SCREEN_SIZES | `<${keyof typeof SCREEN_SIZES}`,
+  string
+>;
+export const SCREEN_SIZE_QUERIES: ScreenSizesQueries = Object.entries(
+  SCREEN_SIZES
+).reduce<ScreenSizesQueries>(
+  (result, [key, value]) => ({
+    ...result,
+    [key]: `(min-width:${value}px)`,
+    [`<${key}`]: `(max-width:${value}px)`,
+  }),
+  {} as ScreenSizesQueries
+);
 
 export const NAV_ITEMS = [
   {

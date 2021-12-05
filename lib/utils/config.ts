@@ -1,11 +1,12 @@
 import getRuntimeConfig from "next/config";
 
-import { PublicRuntimeConfig, ServerRuntimeConfig } from "@/lib/types/next";
+import type {
+  PublicRuntimeConfig,
+  ServerRuntimeConfig,
+} from "@/lib/types/next";
 
-const getConfig = () =>
+export const getConfig = () =>
   getRuntimeConfig() as {
     publicRuntimeConfig: PublicRuntimeConfig;
     serverRuntimeConfig: ServerRuntimeConfig;
   };
-
-export default getConfig;

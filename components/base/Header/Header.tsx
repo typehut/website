@@ -1,14 +1,11 @@
 import clsx from "clsx";
 import * as React from "react";
 
+import type { HeaderElementRef, HeaderProps } from "./Header.types";
+
 const NAME = "Header";
 
-type BaseElement = React.ElementRef<"header">;
-type BaseElementProps = JSX.IntrinsicElements["header"];
-export interface HeaderProps
-  extends React.PropsWithChildren<BaseElementProps> {}
-
-const Header = React.forwardRef<BaseElement, HeaderProps>(
+export const Header = React.forwardRef<HeaderElementRef, HeaderProps>(
   ({ children, className: headerClassName, ...headerProps }, forwardedRef) => {
     return (
       <header
@@ -26,5 +23,3 @@ const Header = React.forwardRef<BaseElement, HeaderProps>(
 );
 
 Header.displayName = NAME;
-
-export default Header;

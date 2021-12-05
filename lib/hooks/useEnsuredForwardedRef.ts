@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const useEnsuredForwardedRef = <T>(
+export const useEnsuredForwardedRef = <T>(
   forwardedRef: React.MutableRefObject<T>
 ): React.MutableRefObject<T> => {
   const ensuredRef = React.useRef(forwardedRef && forwardedRef.current);
@@ -14,5 +14,3 @@ const useEnsuredForwardedRef = <T>(
 
   return ensuredRef;
 };
-
-export default useEnsuredForwardedRef;

@@ -1,27 +1,28 @@
-import { NextPage } from "next";
+import * as React from "react";
 
-import Header from "@/components/base/Header";
-import Navbar from "@/components/base/Navbar";
+// import { Header } from "@/components/base/Header";
+import { Navbar } from "@/components/base/Navbar";
 
+import type { NextPage } from "next";
 import type { ParsedUrlQuery } from "querystring";
+import type { NavbarTheme } from "@/components/base/Navbar/Navbar.types";
 
 // <AvoidPurge text-primary-50 bg-primary-900 var-white />
 
-const NAV_COLOR = {
-  text: "primary-50",
-  bg: "primary-900",
-  logo: "white",
-};
-const NAV_WAYPOINT = 64;
-
-export interface ExampleParams extends ParsedUrlQuery {}
+export type ExampleParams = ParsedUrlQuery;
 
 export interface ExampleProps {}
 
 const Example: NextPage<ExampleProps> = ({}) => {
+  const [navTheme] = React.useState<NavbarTheme>({
+    textColor: "primary-50",
+    bgColor: "primary-900",
+    logoColor: "white",
+    shadow: true,
+  });
   return (
     <>
-      <Navbar theme={NAV_COLOR} waypoint={NAV_WAYPOINT} />
+      <Navbar theme={navTheme} waypoints={[]} />
       {/* <Header className="bg-primary-900 text-primary-50">
         <div className="container mx-auto py-12">
           <h1>Hello</h1>

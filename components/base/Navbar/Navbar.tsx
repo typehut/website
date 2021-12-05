@@ -1,25 +1,36 @@
+import { useMediaQuery } from "@react-hookz/web";
 import clsx from "clsx";
 import Link from "next/link";
 import * as React from "react";
 
-import NavbarItem from "./NavbarItem";
-import useNavbar from "./useNavbar";
+import { Drawer } from "@/components/base/Drawer";
+import { Logo } from "@/components/base/Logo";
+import { useWaypoint } from "@/lib/hooks/useWaypoint";
+import { getConfig } from "@/lib/utils/config";
+import { NAV_ITEMS, SCREEN_SIZE_QUERIES } from "@/lib/utils/constant";
+import { NavbarItem } from "./NavbarItem";
 
-import Drawer from "@/components/base/Drawer";
-import Logo from "@/components/base/Logo";
-import ToggleHamburger from "@/components/case/ToggleHamburger/ToggleHamburger";
-import getConfig from "@/lib/utils/config";
-import { NAV_ITEMS } from "@/lib/utils/constant";
+import type { NavbarProps, NavbarTheme } from "./Navbar.types";
 
-import type { NavbarProps } from "./Navbar.types";
+const {
+  publicRuntimeConfig: { siteName },
+} = getConfig();
 
-const NAME = "Navbar";
+const DEFAULT_THEME: NavbarTheme = {
+  textColor: "primary-50",
+  bgColor: "primary-900",
+  logoColor: "white",
+  shadow: true,
+};
 
-const { publicRuntimeConfig } = getConfig();
+export const Navbar: React.VFC<NavbarProps> = ({
+  className,
+  theme = DEFAULT_THEME,
+  waypoints = [],
+}) => {
+  const isLargeScreen = useMediaQuery(SCREEN_SIZE_QUERIES.lg);
 
-const Navbar: React.VFC<NavbarProps> = (props) => {
-  const { className } = props;
-  const state = useNavbar(props);
+  useWaypoint(waypoints);
 
   return (
     <>
@@ -30,33 +41,36 @@ const Navbar: React.VFC<NavbarProps> = (props) => {
         )}
       >
         <div
-          className={clsx("fixed h-scroll-padding left-0 top-0 w-full", [
-            state.theme.colors.text,
-            state.theme.colors.bg,
-            state.theme.shadow,
-          ])}
+          className={clsx(
+            "fixed h-scroll-padding left-0 top-0 w-full transition",
+            [
+              `text-${theme.textColor}`,
+              `bg-${theme.bgColor}`,
+              theme.shadow && `shadow-2xl`,
+            ]
+          )}
         >
-          <nav className="container mx-auto h-full relative flex items-stretch lg:justify-between">
-            <ToggleHamburger
-              target={state.drawer.id}
-              expanded={state.drawer.expanded}
-              onExpandedChange={state.drawer.onExpandedChange}
-              aria-label="Toggle navigation"
-              className="block w-12 h-12 lg:hidden"
-            />
-            <div className="mr-12 flex flex-grow justify-center lg:(ml-0 mr-4 flex-none w-auto)">
+          <div className="container mx-auto h-full relative flex items-stretch lg:justify-between">
+            <Drawer className="lg:hidden" aria-hidden={isLargeScreen}>
+              <nav>nav-content</nav>
+            </Drawer>
+
+            <div className="relative z-20 mr-12 flex flex-grow justify-center lg:(ml-0 mr-4 flex-none w-auto)">
               <Link href="/">
                 <a
                   className="flex items-center justify-center w-full h-full"
-                  title={publicRuntimeConfig.siteName}
+                  title={siteName}
                 >
                   <Logo
-                    className={clsx("px-4 h-3.5", state.theme.colors.logo)}
+                    className={clsx("px-4 h-3.5", `var-${theme.logoColor}`)}
                   />
                 </a>
               </Link>
             </div>
-            <div className="hidden flex-grow px-5 lg:(w-auto block)">
+            <nav
+              className="hidden flex-grow px-5 lg:(w-auto block)"
+              aria-hidden={!isLargeScreen}
+            >
               <ul className="flex h-full justify-center items-stretch">
                 {NAV_ITEMS.map((item) => {
                   return (
@@ -66,25 +80,17 @@ const Navbar: React.VFC<NavbarProps> = (props) => {
                   );
                 })}
               </ul>
-            </div>
-            <div className="hidden lg:block">
+            </nav>
+            <div className="hidden lg:block" aria-hidden={!isLargeScreen}>
               <div className="flex h-full items-center">
                 <button type="button" className="btn-secondary">
                   Btn
                 </button>
               </div>
             </div>
-          </nav>
+          </div>
         </div>
       </div>
-
-      <Drawer {...state.drawer}>
-        <nav>nav-content</nav>
-      </Drawer>
     </>
   );
 };
-
-Navbar.displayName = NAME;
-
-export default Navbar;

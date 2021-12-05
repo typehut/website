@@ -1,15 +1,13 @@
 import { isNotNull } from "@/lib/types/misc";
-import {
-  isPostMeta,
-  PostMeta,
-  toSerializablePostMeta,
-} from "@/lib/types/postType";
+import { isPostMeta, toSerializablePostMeta } from "@/lib/types/postType";
 import {
   GITHUB_CONTENTS_BLOG_ENDPOINT,
   GITHUB_CONTENTS_BLOG_POST_RAW,
 } from "@/lib/utils/constant";
 import { httpGetRequest } from "@/lib/utils/http";
 import { compileMDX, isolateMDX } from "@/lib/utils/mdx";
+
+import type { PostMeta } from "@/lib/types/postType";
 
 const mdxPattern = /\.mdx$/;
 
