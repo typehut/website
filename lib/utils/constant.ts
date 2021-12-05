@@ -45,6 +45,8 @@ export const SCREEN_SIZE_QUERIES: ScreenSizesQueries = Object.entries(
   {} as ScreenSizesQueries
 );
 
+export const WORDBREAK_THRESHOLD = 1000;
+
 export const NAV_ITEMS = [
   {
     href: "#home",

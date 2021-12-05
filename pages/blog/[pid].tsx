@@ -3,7 +3,7 @@ import { NextSeo } from "next-seo";
 
 import * as PostAPI from "@/lib/api/post";
 import { getConfig } from "@/lib/utils/config";
-import { timestampToIso } from "@/lib/utils/format";
+import { insertWordBreakJa, timestampToIso } from "@/lib/utils/format";
 
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import type { MDXRemoteSerializeResult } from "next-mdx-remote";
@@ -21,7 +21,10 @@ export interface BlogParams extends ParsedUrlQuery {
 }
 
 export interface BlogProps
-  extends PostType<MDXRemoteSerializeResult, SerializablePostMeta> {}
+  extends PostType<
+    MDXRemoteSerializeResult,
+    SerializablePostMeta & { titleHtml: string }
+  > {}
 
 const Blog: NextPage<BlogProps> = ({ pid, body, meta }) => {
   const nextSeoProps: NextSeoProps = {
@@ -49,7 +52,10 @@ const Blog: NextPage<BlogProps> = ({ pid, body, meta }) => {
     <>
       <NextSeo {...nextSeoProps} />
       <article>
-        <h1>{meta.title}</h1>
+        <h1
+          className="break-heading"
+          dangerouslySetInnerHTML={{ __html: meta.titleHtml }}
+        ></h1>
         <p>by {meta.author.name}</p>
         <MDXRemote {...body} components={components} />
       </article>
@@ -79,7 +85,14 @@ const getStaticProps: GetStaticProps<BlogProps, BlogParams> = async ({
   try {
     const { body, meta } = await PostAPI.get(pid);
     return {
-      props: { pid, body, meta },
+      props: {
+        pid,
+        body,
+        meta: {
+          ...meta,
+          titleHtml: insertWordBreakJa(meta.title),
+        },
+      },
     };
   } catch (error) {
     console.error("Failed to load the blog post.");

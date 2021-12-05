@@ -12,7 +12,7 @@ export const storageAdapter = new QuickLRU({
 
 export const httpGetRequest = (
   url: string,
-  options: Parameters<typeof got.get>[0] = {}
+  options: Record<string, unknown> = {}
 ) => {
   return got.get(url, { cache: storageAdapter, ...options });
 };

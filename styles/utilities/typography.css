@@ -1,0 +1,6 @@
+@layer utilities {
+  .break-heading {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+}
