@@ -1,7 +1,6 @@
 import { act, fireEvent, render } from "@testing-library/react";
 import * as React from "react";
 
-import { ScrollPositionProvider } from "@/lib/context/ScrollPosition";
 import { Navbar } from ".";
 
 import type { NavbarTheme } from "@/components/base/Navbar/Navbar.types";
@@ -60,10 +59,10 @@ describe("Navbar", () => {
         },
       ];
       return (
-        <ScrollPositionProvider container={window}>
+        <>
           <Navbar theme={theme} waypoints={waypoints} />
           <div style={{ height: "1024px" }}></div>
-        </ScrollPositionProvider>
+        </>
       );
     };
 

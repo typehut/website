@@ -1,7 +1,6 @@
-import { useEventListener, useThrottledCallback } from "@react-hookz/web";
+import { useEventListener, useMap, useRafCallback } from "@react-hookz/web";
 import * as React from "react";
 
-import { useScrollPositionContext } from "@/lib/context/ScrollPosition";
 import { hasOwnProperty, isBrowser } from "@/lib/utils/misc";
 
 export type Waypoint = (
@@ -14,71 +13,78 @@ export type Waypoint = (
     }
 ) & { handler: (isBelow: boolean) => unknown; once?: boolean };
 
-type WaypointMapValue = {
-  y: number;
-  handler: Waypoint["handler"];
-  once?: Waypoint["once"];
-  active: boolean;
-  above: boolean;
-  below: boolean;
-};
-
 const getOffset = (el: Element | null) => {
-  const scroll = isBrowser ? scrollY : 0;
+  const scroll = isBrowser ? window.scrollY : 0;
   const rect = el ? el.getBoundingClientRect() : { top: Infinity };
   return rect.top + scroll;
 };
 
 export const useWaypoint = (waypoints: Waypoint[]) => {
-  const { y: scrollY } = useScrollPositionContext();
-  const scrollYRef = React.useRef<number>(scrollY);
-  const waypointMap = React.useRef<Map<Waypoint, WaypointMapValue>>(
-    new Map<Waypoint, WaypointMapValue>()
+  const normalizedWaypoints = useMap<
+    number,
+    {
+      y: number;
+      handler: Waypoint["handler"];
+      once: boolean;
+    }
+  >();
+  const waypointsState = React.useRef(
+    new Map<
+      number,
+      {
+        active: boolean;
+        above: boolean;
+      }
+    >()
   );
 
-  const remapWaypoints = () => {
-    waypoints.forEach((waypoint) => {
+  const normalize = () => {
+    const scrollY = isBrowser ? window.scrollY : 0;
+    waypoints.forEach((waypoint, index) => {
       const y = hasOwnProperty(waypoint, "y")
         ? waypoint.y + 1
         : getOffset(waypoint.ref.current) + (waypoint?.offset || 0);
-      const mappedWaypoint = waypointMap.current.get(waypoint);
-      waypointMap.current.set(waypoint, {
+      if (!waypointsState.current.has(index)) {
+        waypointsState.current.set(index, {
+          active: true,
+          above: scrollY < y,
+        });
+      }
+      normalizedWaypoints.set(index, {
         y,
         handler: waypoint.handler,
-        once: waypoint?.once,
-        active: mappedWaypoint ? mappedWaypoint.active : true,
-        above: mappedWaypoint ? mappedWaypoint.above : scrollYRef.current < y,
-        below: mappedWaypoint ? mappedWaypoint.below : scrollYRef.current >= y,
+        once: waypoint?.once || false,
       });
     });
   };
 
-  // Remap when updated waypoints
-  React.useEffect(remapWaypoints, [waypoints]);
-  useEventListener(
-    isBrowser ? window : null,
-    "resize",
-    useThrottledCallback(remapWaypoints, [waypoints], 100),
-    { passive: true }
-  );
-
-  React.useEffect(() => {
-    waypointMap.current.forEach((waypoint) => {
-      if (!waypoint.active) return;
-      if (scrollY >= waypoint.y) {
-        if (waypoint.above) {
+  const [onScroll] = useRafCallback(() => {
+    normalizedWaypoints.forEach((waypoint, index) => {
+      const state = waypointsState.current.get(index);
+      if (!state || !state.active) return;
+      if (window.scrollY >= waypoint.y) {
+        if (state.above) {
+          state.above = false;
           waypoint.handler(true);
-          if (waypoint.once) waypoint.active = false;
+          if (waypoint.once) state.active = false;
         }
-        waypoint.above = false;
-        waypoint.below = true;
-      } else if (scrollY < waypoint.y) {
-        if (waypoint.below) {
+      } else if (window.scrollY < waypoint.y) {
+        if (!state.above) {
+          state.above = true;
           waypoint.handler(false);
         }
-        waypoint.above = true;
-        waypoint.below = false;
       }
     });
-  }, [scrollY, waypointMap]);
+  });
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  React.useEffect(normalize, [waypoints]);
+  useEventListener(isBrowser ? window : null, "scroll", onScroll, {
+    capture: false,
+    passive: true,
+  });
+  useEventListener(isBrowser ? window : null, "resize", onScroll, {
+    capture: false,
+    passive: true,
+  });
 };

@@ -63,7 +63,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
         setNavTheme({
           textColor: isBelow ? "primary-50" : "primary-900",
           bgColor: isBelow ? "primary-900" : "white",
-          logoColor: isBelow ? "primary-50" : "white",
+          logoColor: isBelow ? "primary-50" : "primary-900",
           shadow: isBelow,
         });
       },
