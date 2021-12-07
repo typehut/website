@@ -27,7 +27,6 @@ export const SCREEN_SIZES = {
   md: 768,
   lg: 1024,
   xl: 1280,
-  "2xl": 1536,
 } as const;
 
 type ScreenSizesQueries = Record<
@@ -49,27 +48,19 @@ export const WORDBREAK_THRESHOLD = 1000;
 
 export const NAV_ITEMS = [
   {
-    href: "#home",
-    label: "Home",
+    href: "/",
+    label: "Works",
   },
   {
-    href: "#features",
-    label: "Features",
-  },
-  {
-    href: "#about",
+    href: "/about",
     label: "About",
-  },
-  {
-    href: "#why",
-    label: "Why",
-  },
-  {
-    href: "#team",
-    label: "Team",
   },
   {
     href: "/blog",
     label: "Blog",
+  },
+  {
+    href: "/contact",
+    label: "Contact",
   },
 ] as const;

@@ -2,7 +2,7 @@
 import colors from "windicss/colors";
 import { defineConfig } from "windicss/helpers";
 
-import fluidTypePlugin from "./framework/windicss/plugins/fluid-types";
+// import fluidTypePlugin from "./framework/windicss/plugins/fluid-types";
 import variableColorsPlugin from "./framework/windicss/plugins/variable-colors";
 
 export default defineConfig({
@@ -40,6 +40,12 @@ export default defineConfig({
       safe: colors.green,
       warn: colors.amber,
       danger: colors.red,
+    },
+    screens: {
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
     },
     fluidType: {
       settings: {
@@ -94,7 +100,8 @@ export default defineConfig({
     extend: {},
   },
   corePlugins: {
-    fontSize: true,
+    // fontSize: true,
+    // container: false,
   },
-  plugins: [fluidTypePlugin, variableColorsPlugin],
+  plugins: [variableColorsPlugin],
 });
