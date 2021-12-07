@@ -9,3 +9,6 @@ export const hasOwnProperty = <
   Object.prototype.hasOwnProperty.call(obj, property);
 
 export const isBrowser = typeof window !== "undefined";
+export const isWindow = (x: unknown): x is Window => x instanceof Window;
+export const isRef = <T>(x: unknown): x is React.RefObject<T> =>
+  Object.prototype.hasOwnProperty.call(x || {}, "current");
